@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import CreatePost from "./pages/CreatePost";
 import EditPost from "./pages/EditPost";
 import SpecificPost from "./pages/SpecificPost";
+import TagResults from "./pages/TagResults";
 
 import { Container } from 'react-bootstrap';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -65,7 +66,8 @@ function App() {
                 <Route path="/create" exact="true" element={<CreatePost/>}/>             
                 <Route path="/:postId/edit" element={<EditPost/>}/>                      
                 <Route path="/:postId" element={<SpecificPost/>}/>                      
-                <Route path="/" exact="true" element={<Home/>}/>             
+                <Route path="/" exact="true" element={<Home/>}/>    
+                <Route path="/tags/:tag" element={<TagResults/>}/>         
             </Routes>
         </Container> 
       <Footer/>   

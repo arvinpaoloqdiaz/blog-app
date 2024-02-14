@@ -2,7 +2,7 @@ import {Container} from "react-bootstrap";
 import {useEffect, useState ,useContext} from "react";
 import * as DOMPurify from "dompurify";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { faCircleXmark, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import {Link ,useParams, useNavigate} from "react-router-dom";
 import DeletePost from "../components/DeletePost";
 import Post from "../components/Post";
@@ -26,6 +26,7 @@ export default function SpecificPost(){
 	},[])
 	return(
 		<>
+		
 		{blogPosts}
 		</>
 	)
