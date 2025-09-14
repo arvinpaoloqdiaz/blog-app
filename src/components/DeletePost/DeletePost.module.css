@@ -1,0 +1,32 @@
+.deleteBtn {
+  background-color: transparent !important;
+  border: 1px solid transparent !important;
+  font-weight: 600;
+  transition: background 0.2s ease;
+  color:var(--bs-danger) !important;
+}
+
+.deleteBtn:hover {
+  color: #bb2d3b !important;
+}
+
+.modal .modal-content {
+  background-color: var(--background);
+  color: var(--offwhite);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.modal .btn-secondary {
+  background-color: #555;
+  border: none;
+}
+
+.modal .btn-danger {
+  background-color: var(--accent1);
+  border: none;
+}
+
+.modal .btn-danger:hover {
+  background-color: var(--accent2);
+}

@@ -1,0 +1,176 @@
+/* ===== Container & Layout ===== */
+.container {
+  max-width: 750px;
+  margin: 2rem auto;
+  padding: 2rem 1.5rem;
+  background: var(--background);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 12px var(--shadow);
+  color: var(--offwhite);
+  font-family: var(--font);
+}
+
+.heading {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: var(--accent2);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ===== Labels & Inputs ===== */
+.label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--offwhite);
+}
+
+.input,
+.textarea {
+  margin-top: 0.5rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid #444;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: border 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  background: #1e1e1e;
+  color: var(--offwhite);
+}
+.textarea{
+    height:auto;
+}
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: var(--accent1);
+  box-shadow: 0 0 0 3px rgba(0, 174, 239, 0.25);
+}
+
+/* Rich editor wrapper: allow overflow so tooltip isn't clipped */
+.richEditor {
+  margin-top: 0.5rem;
+  background: #ffffff; /* light "paper" look */
+  border-radius: 10px;
+  color: #000;
+  border: 1px solid #ccc;
+  overflow: visible; /* IMPORTANT: allow the tooltip to overflow */
+}
+.ql-container.ql-snow{
+    border:1px solid rgba(0,0,0,0) !important;
+}
+.ql-toolbar.ql-snow{
+    border:none !important;
+}
+/* Toolbar */
+.richEditor .ql-toolbar {
+  background: #f8f9fa;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  border-radius: 10px 10px 0 0;
+  z-index: 2;
+}
+
+/* Make sure toolbar icons are visible */
+.richEditor .ql-toolbar button svg {
+  fill: #333;
+}
+
+/* Editor container: let it size by content but provide a min-height */
+.richEditor .ql-container {
+  border: none !important;
+  font-size: 1rem;
+  font-family: var(--font);
+  height: auto !important;       /* let the container size naturally */
+  min-height: 260px !important;  /* start tall enough */
+  max-height: 60vh;              /* avoid extremely tall editors */
+  overflow: auto;                /* allow internal scrolling if content huge */
+}
+
+/* Editor content */
+.richEditor .ql-editor {
+  padding: 1rem;
+  line-height: 1.6;
+  color: #000;
+  min-height: 240px; /* visible writing area from the start */
+  white-space: pre-wrap; /* preserve newlines nicely */
+}
+
+/* Quill tooltip (link dialog, etc.) */
+.richEditor .ql-tooltip {
+  z-index: 10000 !important; /* float above everything */
+  width: 360px;              /* make the dialog wide enough */
+  left: 50% !important;      /* center-ish positioning */
+  transform: translateX(-50%) !important;
+}
+
+/* Input inside tooltip (link url input) */
+.richEditor .ql-tooltip input[type="text"],
+.richEditor .ql-tooltip input[type="url"] {
+  width: calc(100% - 70px); /* leave space for action buttons */
+  display: inline-block;
+}
+
+/* Tooltip action buttons (apply/cancel) spacing */
+.richEditor .ql-tooltip .ql-action {
+  margin-left: 6px;
+}
+
+/* Small responsive tweak */
+@media (max-width: 480px) {
+  .richEditor .ql-tooltip {
+    width: 92% !important;
+    left: 4% !important;
+    transform: none !important;
+  }
+}
+
+
+
+
+/* ===== Tags Preview ===== */
+.tagsPreview {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tagChip {
+  border-radius: var(--radius);
+  padding: 0.3rem 0.7rem;
+  font-size: 0.85rem;
+  background-color: var(--accent1) !important;
+  color: #fff;
+}
+
+/* ===== Submit Button ===== */
+.submitBtn {
+  padding: 0.9rem 1.5rem;
+  border: 1px solid var(--accent1) !important;
+  border-radius: 12px;
+  background: var(--accent1) !important;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.3s ease, box-shadow 0.2s ease;
+}
+
+.submitBtn:hover {
+  background: var(--accent2) !important;
+  transform: scale(0.98);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.disabled {
+  background: #555;
+  cursor: not-allowed;
+}

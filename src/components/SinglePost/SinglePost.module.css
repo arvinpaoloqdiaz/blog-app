@@ -1,0 +1,69 @@
+.singlePostCard {
+  border-radius: 8px;
+  background: var(--background);
+  color: var(--offwhite);
+  padding: 1.5rem;
+  border: 1px solid var(--highlight);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.singlePostCard:hover {
+  transform: translateY(-2px);
+  background: rgba(50, 50, 50, 0.9);
+}
+
+.title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.titleLink {
+  color: var(--contrast);
+  text-decoration: none;
+}
+
+.titleLink:hover {
+  color: var(--accent2);
+  text-decoration: underline;
+}
+
+.author {
+  font-size: 0.85rem;
+  color: var(--contrast);
+}
+
+.dates {
+  font-size: 0.75rem;
+  color: var(--contrast);
+}
+
+.tagsWrapper {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.actions {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: end;
+  gap: 1rem;
+  align-items: center;
+}
+
+.actionLink {
+  color: var(--accent2);
+  /* font-weight: 600; */
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.actionLink:hover {
+  color: var(--accent1);
+  /* text-decoration: underline; */
+}

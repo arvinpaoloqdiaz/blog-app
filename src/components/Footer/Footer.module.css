@@ -1,0 +1,124 @@
+:root {
+  --background: #262626;
+  --accent1: rgba(150,123,182,1);
+  --accent2: rgba(200,162,200,1);
+  --contrast: rgba(195,205,230,1);
+  --offwhite: #e8e4e4;
+  --shadow: rgba(0,0,0,0.7);
+}
+
+/* footer card background + inset shadow similar to your old custom-footer */
+.footer {
+  background: var(--background);
+  color: var(--offwhite);
+  box-shadow: 0 0px 40px var(--shadow);
+  padding-top: 1.5rem;
+  padding-bottom: 1rem;
+  font-family: var(--font, 'Poppins', sans-serif);
+}
+
+/* Left column */
+.aboutWrapper {
+  max-width: 720px;
+  padding: 0.25rem 1rem;
+  text-align: center;
+}
+
+/* small section title */
+.aboutSmall {
+  color: var(--contrast);
+  margin-bottom: 0.25rem;
+  font-size: 0.95rem;
+}
+
+/* big heading style to match your previous h2 look */
+.bigHeading {
+  margin: 0;
+  color: var(--offwhite);
+  font-size: 1.6rem;
+  line-height: 1.25;
+  font-weight: 700;
+}
+
+/* Right column */
+.contactWrapper {
+  max-width: 480px;
+  padding: 0.25rem 1rem;
+  text-align: center;
+}
+
+@media(min-width: 768px) {
+  .aboutWrapper { text-align: left; }
+  .contactWrapper { text-align: right; }
+}
+
+/* Contact and links titles */
+.contactTitle,
+.linksTitle {
+  margin: 0.25rem 0;
+  color: var(--contrast);
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+/* contact lines */
+.contactLine {
+  margin: 0.15rem 0;
+  color: var(--offwhite);
+  font-size: 0.95rem;
+}
+
+/* mail link style */
+.mailLink {
+  color: var(--accent2);
+  text-decoration: none;
+}
+.mailLink:hover { text-decoration: underline; }
+
+/* socials container */
+.socials {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+}
+
+/* generic social link */
+.socialLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--offwhite);
+  font-size: 1.5rem;
+  transition: transform .15s ease, color .15s ease;
+}
+
+/* hover/active */
+.socialLink:hover {
+  transform: translateY(-2px);
+}
+
+/* specific brand colors (keeps old colors) */
+.portfolio { color: rgba(76,175,80,1); } /* green */
+.linkedin { color: rgba(0,119,181,1); }
+.github { color: rgba(64,120,192,1); }
+.codepen { color: rgba(255,255,255,1); }
+
+/* bottom line */
+.bottomText {
+  color: var(--contrast);
+  margin: 0 0.35rem;
+  font-size: 0.9rem;
+}
+
+.separator {
+  color: var(--accent1);
+  margin: 0 0.35rem;
+}
+
+/* small screens: tighten spacing */
+@media(max-width: 575px) {
+  .bigHeading { font-size: 1.3rem; }
+  .socialLink { font-size: 1.35rem; }
+  .contactLine { font-size: 0.9rem; }
+}

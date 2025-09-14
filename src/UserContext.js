@@ -1,12 +1,42 @@
-import React from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 
-// Creates a Context Object
-// A context object as the name states is a data type of an object that can be used to store information that can be shared to other components within the app.
-// The context object is a different approach to passing information between components and allows easier access by avoiding the use of prop-drilling
-const UserContext = React.createContext();
+const UserContext = createContext();
 
+export const UserProvider = ({ children }) => {
+  const [user, setUser] = useState({
+    id: null,
+    isAdmin: null,
+    token: null,
+  });
 
-// The "provider" component allows other components to consume/use the context object and supply the necessary information needed to the context object.
-export const UserProvider = UserContext.Provider;
+  // Load user from localStorage on app load
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+  // Save user to localStorage whenever it changes
+  useEffect(() => {
+    if (user?.id) {
+      localStorage.setItem('user', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('user');
+    }
+  }, [user]);
+
+  const unsetUser = () => {
+    setUser({ id: null, isAdmin: null, token: null });
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+  };
+
+  return (
+    <UserContext.Provider value={{ user, setUser, unsetUser }}>
+      {children}
+    </UserContext.Provider>
+  );
+};
 
 export default UserContext;

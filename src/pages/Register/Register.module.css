@@ -1,0 +1,99 @@
+:root {
+  --background: #262626;
+  --accent1: rgba(150,123,182,255);
+  --accent2: rgba(200,162,200,255);
+  --contrast: rgba(195,205,230,255);
+  --offwhite: #e8e4e4;
+  --shadow: rgba(0,0,0,0.7);
+  --radius: 10px;
+  --font: 'Poppins', sans-serif;
+}
+
+.registerContainer {
+  max-width: 450px;
+  margin: 3rem auto;
+  background: var(--background);
+  padding: 2rem;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 12px var(--shadow);
+  color: var(--offwhite);
+  font-family: var(--font);
+}
+
+.registerHeader {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  color: var(--accent2);
+}
+
+.formGroup {
+  margin-bottom: 1rem;
+}
+
+.formLabel {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--contrast);
+  font-weight: 500;
+}
+
+.formControl {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--accent1);
+  background: var(--background);
+  color: var(--offwhite);
+}
+
+.formControl:focus {
+  outline: none;
+  border-color: var(--accent2);
+  box-shadow: 0 0 8px var(--accent2);
+  background: #2a2a2a;
+  color:var(--offwhite);
+}
+
+.submitBtn {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 1rem;
+  border-radius: var(--radius);
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.submitBtn:hover,
+.submitBtn:active {
+  transform: scale(0.97);
+}
+
+.toRight {
+  text-align: right;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.loginLink {
+  color: var(--accent2);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.loginLink:hover {
+  text-decoration: underline;
+  color: var(--accent1);
+}
+
+.btn-outline-light {
+  color: var(--offwhite);
+  border-color: var(--accent2);
+  margin-top: 0.5rem;
+}
+
+.btn-outline-light:hover {
+  background-color: var(--accent2);
+  color: var(--background);
+}

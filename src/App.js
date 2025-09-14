@@ -1,78 +1,174 @@
-import './App.css';
-import AppNavbar from "./components/AppNavbar";
-import Footer from "./components/Footer";
+import { useState, useEffect } from "react";
+import "./App.css";
+import Navbar from "./components/Navbar/Navbar";
+import Footer from "./components/Footer/Footer";
 
-import Login from "./pages/Login";
-import Logout from "./pages/Logout";
-import Register from "./pages/Register";
+import Login from "./pages/Login/Login";
+import Logout from "./pages/Logout/Logout";
+import Register from "./pages/Register/Register";
 import Home from "./pages/Home";
-import CreatePost from "./pages/CreatePost";
-import EditPost from "./pages/EditPost";
-import SpecificPost from "./pages/SpecificPost";
-import TagResults from "./pages/TagResults";
+import CreatePost from "./pages/CreatePost/CreatePost";
+import EditPost from "./pages/EditPost/EditPost";
+import SpecificPost from "./pages/SpecificPost/SpecificPost";
+import TagResults from "./pages/TagResults/TagResults";
 
-import { Container } from 'react-bootstrap';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { Route, Routes } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { UserProvider } from './UserContext';
+import AdminRoute from "./components/AdminRoute/AdminRoute";
+import { Container } from "react-bootstrap";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
+import { UserProvider } from "./UserContext";
 
+// ---------------------------
+// Animated Routes Component
+// ---------------------------
+function AnimatedRoutes() {
+  const location = useLocation();
 
-function App() {
-
-  const [user,setUser] = useState({
-    id: null,
-    isAdmin:null,
-    token:null
-  });
-
-  const unsetUser = () => {
-    localStorage.clear();
+  const pageVariants = {
+    initial: { opacity: 0, y: 20 },
+    in: { opacity: 1, y: 0 },
+    out: { opacity: 0, y: -20 },
   };
 
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/users/get-detail`,{
-      headers:{
-        Authorization: `Bearer ${ localStorage.getItem('token') }`
-      }
-    })
-    .then(res => res.json())
-    .then(data => {
-      if (typeof data.user !== "undefined"){
-        setUser({
-          id:data.user._id,
-          isAdmin:data.user.isAdmin,
-          token:localStorage.getItem("token")
-        });
-      } else {
-        setUser({
-          id:null,
-          isAdmin:null,
-          token:localStorage.getItem("token")
-        })
-      }
-    })
-    console.log(user)
-  },[]);
+  const pageTransition = {
+    type: "tween",
+    ease: "anticipate",
+    duration: 0.4,
+  };
+
   return (
-   <UserProvider value={{ user, setUser, unsetUser }}>
+    <AnimatePresence mode="wait">
+      <Routes key={location.pathname} location={location}>
+        <Route
+          path="/login"
+          element={
+            <motion.div
+              initial="initial"
+              animate="in"
+              exit="out"
+              variants={pageVariants}
+              transition={pageTransition}
+            >
+              <Login />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/logout"
+          element={
+            <motion.div initial="initial" animate="in" exit="out" variants={pageVariants} transition={pageTransition}>
+              <Logout />
+            </motion.div>
+          }
+        />
+        {/* <Route
+          path="/register"
+          element={
+            <motion.div initial="initial" animate="in" exit="out" variants={pageVariants} transition={pageTransition}>
+              <Register />
+            </motion.div>
+          }
+        /> */}
+        <Route
+          path="/create"
+          element={
+            <AdminRoute>
+              <motion.div initial="initial" animate="in" exit="out" variants={pageVariants} transition={pageTransition}>
+                <CreatePost />
+              </motion.div>
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/:postId/edit"
+          element={
+            <AdminRoute>
+              <motion.div initial="initial" animate="in" exit="out" variants={pageVariants} transition={pageTransition}>
+                <EditPost />
+              </motion.div>
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/:postId"
+          element={
+            <motion.div initial="initial" animate="in" exit="out" variants={pageVariants} transition={pageTransition}>
+              <SpecificPost />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/tags/:tag"
+          element={
+            <motion.div initial="initial" animate="in" exit="out" variants={pageVariants} transition={pageTransition}>
+              <TagResults />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/"
+          element={
+            <motion.div initial="initial" animate="in" exit="out" variants={pageVariants} transition={pageTransition}>
+              <Home />
+            </motion.div>
+          }
+        />
+      </Routes>
+    </AnimatePresence>
+  );
+}
+
+// ---------------------------
+// Main App Component
+// ---------------------------
+function App() {
+  const [apiAwake, setApiAwake] = useState(false);
+  const [checkingApi, setCheckingApi] = useState(true);
+
+  // Wake API on app load
+  useEffect(() => {
+    const wakeApi = async () => {
+      try {
+        const res = await fetch(process.env.REACT_APP_API_URL + "/health", { method: "GET" });
+
+        if (res.ok) {
+          setApiAwake(true); // API is awake
+        } else {
+          console.warn("API ping failed, continuing anyway...");
+          setApiAwake(true);
+        }
+      } catch (err) {
+        console.warn("API not responding yet, continuing...");
+        setApiAwake(true);
+      } finally {
+        setCheckingApi(false);
+      }
+    };
+
+    wakeApi();
+  }, []);
+
+  if (checkingApi)
+    return (
+      <div className="d-flex justify-content-center align-items-center vh-100">
+        <h2>Waking up API...</h2>
+      </div>
+    );
+
+  return (
+    <UserProvider>
       <Router>
-      <AppNavbar/>
-        <Container fluid className="bg-main py-3 height">
-            <Routes>
-                <Route path="/login" exact="true" element={<Login/>}/>
-                <Route path="/logout" exact="true" element={<Logout/>}/>
-                <Route path="/register" exact="true" element={<Register/>}/>             
-                <Route path="/create" exact="true" element={<CreatePost/>}/>             
-                <Route path="/:postId/edit" element={<EditPost/>}/>                      
-                <Route path="/:postId" element={<SpecificPost/>}/>                      
-                <Route path="/" exact="true" element={<Home/>}/>    
-                <Route path="/tags/:tag" element={<TagResults/>}/>         
-            </Routes>
-        </Container> 
-      <Footer/>   
+        <div className="app-wrapper">
+          <Navbar />
+
+          <Container fluid className="bg-main py-3 main-content">
+            <AnimatedRoutes />
+          </Container>
+
+          <Footer />
+        </div>
       </Router>
-    </UserProvider>  
+    </UserProvider>
   );
 }
 

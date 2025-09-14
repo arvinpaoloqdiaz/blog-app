@@ -1,0 +1,96 @@
+.postContainer {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: var(--background);
+  border-radius: var(--radius);
+  /* box-shadow: 0 4px 12px var(--shadow); */
+  color: var(--offwhite);
+}
+
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  color: var(--accent2);
+  font-weight: 500;
+  text-decoration: none;
+  margin-bottom: 1rem;
+  gap:0.25rem;
+}
+
+.backBtn:hover {
+  text-decoration: underline;
+}
+
+.title {
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+  color: var(--accent2);
+}
+
+.meta {
+  font-size: 0.95rem;
+  margin-bottom: 0;
+  color: var(--contrast);
+}
+
+.author {
+  font-weight: 600;
+  color: var(--accent1);
+}
+
+.content {
+  line-height: 1.6;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.editBtn,
+.deleteBtn {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  color:var(--offwhite) !important;
+}
+
+.editBtn {
+  background: var(--accent1);
+  color: var(--background);
+}
+
+.editBtn:hover {
+  background: var(--accent2);
+}
+
+.deleteBtn {
+  background: #d9534f;
+  color: white;
+}
+
+.deleteBtn:hover {
+  background: #c9302c;
+}
+
+.loading,
+.error {
+  text-align: center;
+  margin-top: 2rem;
+}
+.post-container a{
+    color:var(--accent1) !important;
+}
+.post-container a:hover{
+    color:var(--accent2) !important;
+}

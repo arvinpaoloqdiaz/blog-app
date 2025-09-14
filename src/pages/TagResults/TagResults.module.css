@@ -1,0 +1,32 @@
+.resultsContainer {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1rem;
+  font-family: var(--font, 'Poppins', sans-serif);
+  color: var(--offwhite, #e8e4e4);
+}
+
+.title {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--contrast, #c3cde6);
+}
+
+.tag {
+  color: var(--accent2, #c8a2c8);
+}
+
+.postsWrapper {
+  margin-top: 2rem;
+  display: grid;
+  gap: 1.5rem;
+}
+
+.noPosts {
+  text-align: center;
+  font-size: 1rem;
+  color: var(--contrast, #c3cde6);
+  margin-top: 2rem;
+}

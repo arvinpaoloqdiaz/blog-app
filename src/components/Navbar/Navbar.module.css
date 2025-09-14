@@ -1,0 +1,73 @@
+.navbar {
+  background: var(--background);
+  box-shadow: 0 0 20px var(--shadow);
+  padding: 0.75rem 1rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  text-decoration: none;
+  position: relative;
+}
+
+.logoText {
+  font-weight: bold;
+  font-size: 1.75rem;
+  position: absolute;
+  transition: transform 0.3s ease;
+  color: var(--offwhite);
+}
+
+.logoText:nth-child(2) {
+  transform: translate(1px, 1px);
+  color: var(--accent1);
+}
+
+.logoText:nth-child(3) {
+  transform: translate(1px, 1px);
+  color: var(--accent2);
+}
+
+.logoContainer:hover .logoText:nth-child(2) {
+  transform: translate(3ch, 0);
+}
+
+.logoContainer:hover .logoText:nth-child(3) {
+  transform: translate(6ch, 0);
+}
+
+.navLinks {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.navButton {
+  background: var(--accent2);
+  color: var(--offwhite) !important;
+  font-weight: 600;
+  padding: 0.35rem 0.75rem;
+  border-radius: 8px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.navButton:hover,
+.navButton:active {
+  transform: scale(0.97);
+  box-shadow: 0 4px 10px var(--shadow);
+}
+
+.addPostIcon {
+  font-size: 1.5rem;
+  color: var(--accent2);
+  transition: transform 0.2s ease;
+}
+
+.addPostIcon:hover {
+  transform: scale(1.1);
+  color: var(--accent1);
+}
