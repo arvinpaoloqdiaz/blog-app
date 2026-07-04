@@ -1,0 +1,283 @@
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.eyebrow {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent1);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.4rem;
+}
+
+.title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin: 0 0 0.4rem;
+  letter-spacing: -0.03em;
+}
+
+.subtitle {
+  color: var(--text-muted);
+  font-size: 1rem;
+  margin: 0;
+}
+
+.addBtn {
+  padding: 0.55rem 1.2rem;
+  border-radius: 8px;
+  background: var(--accent-gradient);
+  color: white;
+  border: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(120,80,160,0.25);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+.addBtn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(120,80,160,0.35); }
+
+/* Admin Form */
+.form {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+@media (max-width: 600px) { .formGrid { grid-template-columns: 1fr; } }
+
+.input {
+  padding: 0.6rem 0.9rem;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  font-size: 0.9rem;
+  color: var(--text-main);
+  background: var(--background);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.input:focus { border-color: var(--accent1); }
+
+.textarea {
+  width: 100%;
+  padding: 0.6rem 0.9rem;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  font-size: 0.9rem;
+  color: var(--text-main);
+  background: var(--background);
+  outline: none;
+  resize: vertical;
+  margin-bottom: 0.75rem;
+  transition: border-color 0.2s;
+}
+.textarea:focus { border-color: var(--accent1); }
+
+.checkLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.submitBtn {
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  background: var(--accent-gradient);
+  color: white;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+.submitBtn:hover { transform: translateY(-1px); }
+.submitBtn:disabled { opacity: 0.7; cursor: not-allowed; }
+
+/* ── Split Layout ── */
+.splitLayout {
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+  margin-bottom: 6rem;
+}
+
+.splitItem {
+  display: flex;
+  flex-direction: row;
+  gap: 3rem;
+  align-items: flex-start;
+  padding-bottom: 5rem;
+  border-bottom: 1px solid var(--border);
+}
+.splitItem:last-child {
+  border-bottom: none;
+}
+
+/* Alternate left/right */
+.splitItem:nth-child(even) {
+  flex-direction: row-reverse;
+}
+
+.splitImageWrapper {
+  flex: 1;
+  max-width: 480px;
+  position: relative;
+}
+
+.splitImg {
+  width: 100%;
+  height: 320px;
+  border-radius: 12px;
+  object-fit: cover;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+  transition: transform 0.3s ease;
+}
+
+.splitItem:hover .splitImg {
+  transform: translateY(-4px);
+}
+
+.splitContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 320px; /* Matches image height */
+  gap: 1rem;
+}
+
+.splitHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.cardTitle {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0;
+}
+
+/* Description & Hover Effect */
+.descWrapper {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+  border-radius: 6px;
+}
+
+.cardDesc {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.fadeOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: linear-gradient(to bottom, transparent, var(--background));
+  pointer-events: none;
+}
+
+.readMoreHover {
+  position: absolute;
+  inset: 0;
+  background: var(--background);
+  color: var(--accent1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.descWrapper:hover .readMoreHover {
+  opacity: 0.95;
+}
+
+/* Tags */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tag {
+  background: var(--background);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+}
+
+/* Links */
+.cardLinks {
+  display: flex;
+  gap: 1.2rem;
+  margin-top: 0.2rem;
+}
+
+.linkBtn {
+  font-size: 0.85rem;
+  color: var(--text-main);
+  text-decoration: none;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: color 0.2s;
+}
+
+.linkBtn:hover {
+  color: var(--accent1);
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .splitItem { flex-direction: column !important; gap: 1.5rem; height: auto; }
+  .splitImageWrapper { max-width: 100%; }
+  .splitContent { height: auto; min-height: 320px; }
+}
+

@@ -1,96 +1,287 @@
-.postContainer {
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 2rem;
+/* ── Article wrapper ── */
+.article {
+  max-width: 100%;
   background: var(--background);
-  border-radius: var(--radius);
-  /* box-shadow: 0 4px 12px var(--shadow); */
-  color: var(--offwhite);
+  padding-bottom: 6rem;
 }
 
-.backBtn {
+/* ── Back row ── */
+.backRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.backRowOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}
+
+.adminActions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.editBtn {
   display: inline-flex;
   align-items: center;
-  color: var(--accent2);
-  font-weight: 500;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent1);
+  background: rgba(120, 80, 160, 0.08);
+  border-radius: 8px;
+  padding: 0.4rem 0.9rem;
   text-decoration: none;
-  margin-bottom: 1rem;
-  gap:0.25rem;
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
-.backBtn:hover {
-  text-decoration: underline;
+.editBtn:hover {
+  background: rgba(120, 80, 160, 0.15);
+  transform: translateY(-1px);
+  color: var(--accent1);
+}
+
+/* ── Hero image ── */
+.heroWrapper {
+  position: relative;
+  width: 100%;
+  max-height: 520px;
+  overflow: hidden;
+  margin-bottom: 0;
+}
+
+.heroImg {
+  width: 100%;
+  height: 520px;
+  object-fit: cover;
+  display: block;
+}
+
+.heroOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 160px;
+  background: linear-gradient(to bottom, transparent, var(--background));
+}
+
+/* ── Content column ── */
+.contentColumn {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* ── Header ── */
+.header {
+  padding-top: 2.5rem;
+}
+
+.tagsRow {
+  margin-bottom: 1rem;
 }
 
 .title {
-  font-size: 2.2rem;
-  margin-bottom: 0.5rem;
-  color: var(--accent2);
+  font-size: clamp(1.9rem, 4vw, 2.8rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  color: var(--text-main);
+  margin-bottom: 1.25rem;
 }
 
 .meta {
-  font-size: 0.95rem;
-  margin-bottom: 0;
-  color: var(--contrast);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
 }
 
 .author {
   font-weight: 600;
-  color: var(--accent1);
+  color: var(--text-main);
 }
 
-.content {
-  line-height: 1.6;
-  font-size: 1.1rem;
-  margin-bottom: 2rem;
+.dot {
+  color: #ccc;
 }
 
-.actions {
+.date {
+  color: var(--text-muted);
+}
+
+.edited {
+  font-size: 0.82rem;
+  color: #aaa;
+  font-style: italic;
+}
+
+.divider {
+  height: 1.5px;
+  background: var(--border);
+  margin-bottom: 2.5rem;
+  border-radius: 2px;
+}
+
+/* ── Body ── */
+.body {
+  font-size: 1.15rem;
+  line-height: 1.9;
+  color: var(--text-main);
+}
+
+
+
+/* ── Footer ── */
+.footer {
+  margin-top: 3rem;
+}
+
+.footerDivider {
+  height: 1.5px;
+  background: var(--border);
+  margin-bottom: 1.5rem;
+}
+
+.footerTags {
   display: flex;
-  gap: 1rem;
-}
-
-.editBtn,
-.deleteBtn {
-  padding: 0.5rem 1rem;
-  border-radius: var(--radius);
-  font-weight: 600;
-  border: none;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0.5rem;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  color:var(--offwhite) !important;
 }
 
-.editBtn {
-  background: var(--accent1);
-  color: var(--background);
+.footerTagsLabel {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-right: 0.25rem;
 }
 
-.editBtn:hover {
-  background: var(--accent2);
+/* ── Loading skeleton ── */
+.skeletonWrapper {
+  background: var(--background);
+  padding-bottom: 4rem;
 }
 
-.deleteBtn {
-  background: #d9534f;
-  color: white;
+.skeletonHero {
+  width: 100%;
+  height: 400px;
+  background: linear-gradient(90deg, #ece6f5 25%, #f5f0ff 50%, #ece6f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
 }
 
-.deleteBtn:hover {
-  background: #c9302c;
+.skeletonBody {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
-.loading,
-.error {
+.skeletonTitle {
+  height: 2.2rem;
+  width: 80%;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #ece6f5 25%, #f5f0ff 50%, #ece6f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  margin-bottom: 0.5rem;
+}
+
+.skeletonMeta {
+  height: 0.8rem;
+  width: 45%;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #ece6f5 25%, #f5f0ff 50%, #ece6f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+.skeletonLine {
+  height: 0.85rem;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #ece6f5 25%, #f5f0ff 50%, #ece6f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Error state ── */
+.errorWrapper {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  margin-top: 2rem;
+  padding: 3rem 1.5rem;
 }
-.post-container a{
-    color:var(--accent1) !important;
+
+.errorIcon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
-.post-container a:hover{
-    color:var(--accent2) !important;
+
+.errorTitle {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--text-main);
+}
+
+.errorMsg {
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+}
+
+.errorBtn {
+  background: var(--accent-gradient);
+  color: white;
+  border: none;
+  padding: 0.65rem 1.6rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(120, 80, 160, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.errorBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(120, 80, 160, 0.45);
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .heroImg { height: 240px; }
+  .heroWrapper { max-height: 240px; }
+  .title { font-size: 1.6rem; }
+  .body { font-size: 1rem; }
+  .contentColumn { padding: 0 1rem; }
 }

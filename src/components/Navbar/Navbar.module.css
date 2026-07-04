@@ -1,73 +1,248 @@
+/* ===========================
+   Top Navbar
+   =========================== */
 .navbar {
-  background: var(--background);
-  box-shadow: 0 0 20px var(--shadow);
-  padding: 0.75rem 1rem;
-  font-family: 'Poppins', sans-serif;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.3s ease, background 0.3s ease;
 }
 
+.scrolled {
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
+}
+
+/* Three-column inner: logo | nav | actions */
+.inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.9rem 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+}
+
+/* ===========================
+   Logo
+   =========================== */
 .logoContainer {
   display: flex;
-  align-items: center;
-  cursor: pointer;
+  align-items: baseline;
   text-decoration: none;
-  position: relative;
+  gap: 0;
+  justify-self: start;
 }
 
-.logoText {
-  font-weight: bold;
-  font-size: 1.75rem;
-  position: absolute;
-  transition: transform 0.3s ease;
-  color: var(--offwhite);
+.logoWord {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  font-size: 1.4rem;
+  color: var(--text-main);
+  letter-spacing: -0.03em;
+  transition: color 0.2s;
 }
 
-.logoText:nth-child(2) {
-  transform: translate(1px, 1px);
+.logoDot {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  font-size: 1.6rem;
+  color: var(--accent1);
+  transition: color 0.2s;
+}
+
+.logoContainer:hover .logoWord {
   color: var(--accent1);
 }
 
-.logoText:nth-child(3) {
-  transform: translate(1px, 1px);
+/* ===========================
+   Desktop Nav (center)
+   =========================== */
+.desktopNav {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+/* Individual nav link */
+.navLink {
+  position: relative;
+  padding: 0.4rem 0.65rem;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-decoration: none;
+  border-radius: 6px;
+  transition: color 0.2s ease;
+}
+
+.navLink:hover {
+  color: var(--accent1);
+}
+
+.navLinkActive {
+  color: var(--accent1);
+  font-weight: 600;
+}
+
+/* Animated underline indicator */
+.activeUnderline {
+  position: absolute;
+  bottom: -2px;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: var(--accent-gradient);
+  border-radius: 2px;
+}
+
+/* ===========================
+   Right: Admin + Auth
+   =========================== */
+.navActions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-self: end;
+}
+
+.adminIcon {
+  color: var(--accent1);
+  font-size: 1.35rem;
+  padding: 0.3rem;
+  transition: transform 0.2s ease, color 0.2s ease;
+  text-decoration: none;
+}
+
+.adminIcon:hover {
+  transform: scale(1.15);
   color: var(--accent2);
 }
 
-.logoContainer:hover .logoText:nth-child(2) {
-  transform: translate(3ch, 0);
-}
-
-.logoContainer:hover .logoText:nth-child(3) {
-  transform: translate(6ch, 0);
-}
-
-.navLinks {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.navButton {
-  background: var(--accent2);
-  color: var(--offwhite) !important;
-  font-weight: 600;
-  padding: 0.35rem 0.75rem;
+.authButton {
+  padding: 0.4rem 1rem;
   border-radius: 8px;
+  background: var(--accent-gradient);
+  color: white !important;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(120, 80, 160, 0.25);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.navButton:hover,
-.navButton:active {
-  transform: scale(0.97);
-  box-shadow: 0 4px 10px var(--shadow);
+.authButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(120, 80, 160, 0.35);
+  color: white;
 }
 
-.addPostIcon {
-  font-size: 1.5rem;
-  color: var(--accent2);
-  transition: transform 0.2s ease;
+/* ===========================
+   Mobile Bottom Tab Bar
+   =========================== */
+.bottomNav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06);
+  padding: 0.5rem 0.25rem;
+  padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
 }
 
-.addPostIcon:hover {
-  transform: scale(1.1);
+.bottomNavItem {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  flex: 1;
+  text-decoration: none;
+  padding: 0.3rem 0.1rem;
+  color: var(--text-muted);
+  transition: color 0.2s ease;
+  min-width: 0;
+}
+
+.bottomNavItem:hover {
   color: var(--accent1);
+}
+
+.bottomNavItemActive {
+  color: var(--accent1);
+}
+
+.bottomNavIndicator {
+  position: absolute;
+  top: -0.5rem;
+  left: 20%;
+  right: 20%;
+  height: 2.5px;
+  background: var(--accent-gradient);
+  border-radius: 0 0 3px 3px;
+}
+
+.bottomNavIcon {
+  font-size: 0.95rem;
+  transition: transform 0.2s ease, font-size 0.2s ease;
+}
+
+.bottomNavItemActive .bottomNavIcon {
+  font-size: 1.2rem;
+  transform: translateY(-1px);
+}
+
+.bottomNavLabel {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.2s ease, opacity 0.2s ease;
+}
+
+.bottomNavItemActive .bottomNavLabel {
+  max-height: 1.2rem;
+  opacity: 1;
+}
+
+/* ===========================
+   Responsive
+   =========================== */
+@media (max-width: 900px) {
+  .desktopNav {
+    gap: 0;
+  }
+  .navLink {
+    padding: 0.4rem 0.45rem;
+    font-size: 0.82rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .desktopNav {
+    display: none;
+  }
+  .bottomNav {
+    display: flex;
+  }
+  /* Add padding to main content so bottom nav doesn't overlap */
+  .inner {
+    grid-template-columns: 1fr 1fr;
+  }
 }

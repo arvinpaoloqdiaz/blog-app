@@ -1,0 +1,250 @@
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+/* Hero */
+.hero {
+  padding: 4rem 0 3rem;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 1.5rem 0 2rem;
+  }
+}
+
+.heroLabel {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--accent1);
+  letter-spacing: 0.04em;
+  margin-bottom: 1rem;
+}
+
+.heroTitle {
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  font-weight: 800;
+  color: var(--text-main);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.25rem;
+}
+
+.highlight {
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.heroSubtitle {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  max-width: 580px;
+  margin: 0 auto 2rem;
+  line-height: 1.7;
+}
+
+.heroCta {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.ctaPrimary {
+  padding: 0.75rem 1.75rem;
+  border-radius: 10px;
+  background: var(--accent-gradient);
+  color: white;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  box-shadow: 0 6px 20px rgba(120, 80, 160, 0.3);
+  transition: all 0.25s ease;
+}
+.ctaPrimary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(120, 80, 160, 0.4);
+  color: white;
+}
+
+.ctaSecondary {
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.ctaSecondary:hover {
+  border-color: var(--accent1);
+  color: var(--accent1);
+}
+
+/* Sections Grid */
+.sections {
+  padding-top: 1rem;
+}
+
+.sectionTitle {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.02em;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.5rem;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  text-decoration: none;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+  transition: all 0.28s cubic-bezier(0.25, 0.8, 0.25, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--accent-gradient);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.1);
+  border-color: rgba(120, 80, 160, 0.2);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.cardEmoji {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.cardTitle {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0;
+}
+
+.cardDesc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin: 0;
+  flex: 1;
+}
+
+.cardArrow {
+  font-size: 1.1rem;
+  color: var(--accent1);
+  margin-top: 0.25rem;
+  transition: transform 0.2s ease;
+}
+
+.card:hover .cardArrow {
+  transform: translateX(4px);
+}
+
+/* Explore Section: Asymmetric / Masonry Layout */
+.masonryContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.masonryItem {
+  flex: 1 1 calc(33.333% - 2rem);
+  min-width: 260px;
+  position: relative;
+  text-decoration: none;
+  padding: 2rem 1.5rem;
+  transition: transform 0.3s ease;
+}
+
+.masonryItem:nth-child(even) {
+  transform: translateY(2rem);
+}
+
+.masonryItem:hover {
+  transform: translateY(-8px) scale(1.02);
+}
+
+.masonryItem:nth-child(even):hover {
+  transform: translateY(1.5rem) scale(1.02);
+}
+
+.masonryIconBg {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 5rem;
+  color: var(--accent1);
+  opacity: 0.05;
+  z-index: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.masonryItem:hover .masonryIconBg {
+  opacity: 0.15;
+  transform: scale(1.1) rotate(10deg);
+}
+
+.masonryContent {
+  position: relative;
+  z-index: 1;
+}
+
+.masonryIcon {
+  font-size: 1.8rem;
+  color: var(--accent1);
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.masonryTitle {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin: 0 0 0.5rem 0;
+}
+
+.masonryDesc {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin: 0;
+}

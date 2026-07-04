@@ -1,0 +1,196 @@
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.eyebrow { font-size: 0.8rem; font-weight: 600; color: var(--accent1); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.4rem; }
+.title { font-family: 'Montserrat', sans-serif; font-size: 2.2rem; font-weight: 800; color: var(--text-main); margin: 0 0 0.4rem; letter-spacing: -0.03em; }
+.subtitle { color: var(--text-muted); font-size: 1rem; margin: 0; }
+
+.uploadBtn {
+  padding: 0.55rem 1.2rem;
+  border-radius: 8px;
+  background: var(--accent-gradient);
+  color: white;
+  border: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.uploadBtn:hover { transform: translateY(-1px); }
+
+/* Upload form */
+.form {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 2rem;
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  align-items: center;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+}
+
+.fileInput {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  flex: 1;
+  min-width: 200px;
+}
+
+.input {
+  padding: 0.6rem 0.9rem;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  font-size: 0.9rem;
+  color: var(--text-main);
+  background: var(--background);
+  outline: none;
+  flex: 1;
+  min-width: 180px;
+}
+.input:focus { border-color: var(--accent1); }
+
+.submitBtn {
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  background: var(--accent-gradient);
+  color: white;
+  border: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.submitBtn:disabled { opacity: 0.7; cursor: not-allowed; }
+
+/* Gallery Grid */
+.grid {
+  columns: 3;
+  column-gap: 1rem;
+}
+
+@media (max-width: 768px) { .grid { columns: 2; } }
+@media (max-width: 480px) { .grid { columns: 1; } }
+
+.imgWrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  break-inside: avoid;
+}
+
+.img {
+  width: 100%;
+  display: block;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+}
+
+.imgWrapper:hover .img {
+  transform: scale(1.03);
+}
+
+.captionOverlay {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,0.65));
+  color: white;
+  padding: 1.5rem 0.9rem 0.7rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+  border-radius: 0 0 10px 10px;
+}
+.captionOverlay p { margin: 0; }
+
+.imgWrapper:hover .captionOverlay {
+  transform: translateY(0);
+}
+
+.deleteOverlay {
+  position: absolute;
+  top: 0.5rem; right: 0.5rem;
+  background: rgba(0,0,0,0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 28px; height: 28px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.imgWrapper:hover .deleteOverlay { opacity: 1; }
+
+/* Lightbox */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(6px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.lightboxContent {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.lightboxImg {
+  max-width: 100%;
+  max-height: 80vh;
+  border-radius: 12px;
+  object-fit: contain;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+
+.lightboxCaption {
+  color: rgba(255,255,255,0.85);
+  font-size: 0.9rem;
+  text-align: center;
+  margin: 0;
+}
+
+.lightboxClose {
+  position: absolute;
+  top: -2.5rem; right: -0.5rem;
+  background: rgba(255,255,255,0.1);
+  border: none;
+  color: white;
+  font-size: 1.1rem;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.lightboxClose:hover { background: rgba(255,255,255,0.25); }
+
+.muted { color: var(--text-muted); font-size: 0.95rem; margin-top: 1rem; }

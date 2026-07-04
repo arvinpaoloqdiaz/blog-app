@@ -1,0 +1,76 @@
+[
+  {
+    "title": "Workstation",
+    "icon": "faLaptopCode",
+    "items": [
+      { "name": "ASUS Vivobook 16", "desc": "Primary laptop for development — lightweight enough to carry, capable enough for everything I throw at it." },
+      { "name": "Custom PC", "desc": "Home rig with 16GB RAM, Intel processor, and AMD Radeon GPU — handles heavier workloads, compiling, and the occasional rendering session." },
+      { "name": "Samsung External Monitor", "desc": "Extends the workspace for a more comfortable dual-screen setup when at the desk." },
+      { "name": "Full Mechanical Wireless Keyboard", "desc": "Creamy tactile switches with dedicated macro buttons — satisfying to type on and practical for repetitive workflows." },
+      { "name": "Wireless Gaming Mouse", "desc": "Precise and lag-free — doubles just as well as a productivity mouse for day-to-day use." }
+    ]
+  },
+  {
+    "title": "Development",
+    "icon": "faCode",
+    "items": [
+      { "name": "Antigravity IDE", "desc": "My primary editor for personal projects — an AI-native IDE that integrates agentic workflows directly into the coding experience." },
+      { "name": "VS Code", "desc": "Reliable fallback editor, heavily customized with extensions, themes, and keybindings." },
+      { "name": "Cursor", "desc": "AI-powered editor I use for work — great for navigating large codebases and getting context-aware suggestions quickly." },
+      { "name": "Node.js + Express", "desc": "Go-to backend stack for personal REST APIs and side projects." },
+      { "name": "Laravel", "desc": "PHP framework for personal projects — elegant, opinionated, and batteries-included. Great for rapid backend development." },
+      { "name": "Next.js", "desc": "Primary frontend framework of choice — full-stack capability, great DX, and excellent SEO support out of the box." },
+      { "name": "React + Vite", "desc": "Lightweight alternative for SPAs when a full Next.js setup isn't necessary." },
+      { "name": "MongoDB + Mongoose", "desc": "Flexible NoSQL solution for personal projects with dynamic or evolving schemas." },
+      { "name": "MySQL / MariaDB", "desc": "Relational database for structured, relation-heavy data — primarily used in work projects." },
+      { "name": "Git + GitHub / Bitbucket", "desc": "Git for version control everywhere. GitHub for personal projects, Bitbucket for work repositories." },
+      { "name": "Laragon", "desc": "Local Apache + MySQL development server for PHP and Laravel projects on Windows — zero-config and fast." },
+      { "name": "Docker + WSL (Ubuntu) — WIP", "desc": "Building a containerized, Linux-first development environment on Windows. Still a work in progress, but the goal is full reproducibility across machines." }
+    ]
+  },
+  {
+    "title": "Design",
+    "icon": "faPalette",
+    "items": [
+      { "name": "Figma", "desc": "UI/UX design and interactive prototyping for web projects." },
+      { "name": "GIMP", "desc": "Open-source image editor for asset preparation, photo manipulation, and quick edits." },
+      { "name": "Canva", "desc": "Fast graphic design for social content, presentations, and non-technical visuals." },
+      { "name": "Blender", "desc": "Dabbled in 3D modeling — exploring it as a creative outlet when time allows." },
+      { "name": "Cloudinary", "desc": "Cloud-based image hosting and on-the-fly transformation for web projects." }
+    ]
+  },
+  {
+    "title": "Deployment",
+    "icon": "faRocket",
+    "items": [
+      { "name": "Render", "desc": "Hosts my Node.js/Express APIs — works well on the free tier, even with the occasional cold start." },
+      { "name": "Vercel", "desc": "Deploys React and Next.js apps with zero config, instant preview URLs, and seamless CI/CD from GitHub." },
+      { "name": "GitHub Pages", "desc": "Serves purely static HTML/CSS/JS projects — simple, free, and perfectly reliable for what it does." },
+      { "name": "GoDaddy", "desc": "Where I register and manage custom domains for my projects." },
+      { "name": "Cloudflare", "desc": "DNS and CDN layer that connects custom domains to Vercel and GitHub Pages deployments, with added performance and security." }
+    ]
+  },
+  {
+    "title": "AI & Productivity",
+    "icon": "faWandMagicSparkles",
+    "items": [
+      { "name": "Antigravity", "desc": "My primary AI agent for personal projects — blends coding, image generation, and planning into a single agentic workflow." },
+      { "name": "Claude", "desc": "Preferred AI for code review, refactoring, architecture discussions, and anything that needs careful reasoning." },
+      { "name": "ChatGPT", "desc": "General-purpose AI for brainstorming, quick drafts, and everyday queries." },
+      { "name": "Gemini", "desc": "Go-to for image-related tasks — understanding, describing, and generating visuals." }
+    ]
+  },
+  {
+    "title": "Learning",
+    "icon": "faBookOpen",
+    "items": [
+      { "name": "YouTube", "desc": "Primary source for tutorials, conference talks, and deep-dives into new technology." },
+      { "name": "freeCodeCamp", "desc": "The structured curriculum that laid the foundation of my development journey." },
+      { "name": "GeeksforGeeks", "desc": "Quick reference for data structures, algorithms, and language-specific concepts." },
+      { "name": "Udemy", "desc": "Project-based courses for picking up new frameworks and technologies at my own pace." },
+      { "name": "Coursera", "desc": "Formal learning paths and certifications from universities and top tech companies." },
+      { "name": "Google Courses", "desc": "Google's free certification programs — useful for cloud, analytics, and career development." },
+      { "name": "KodeKloud", "desc": "Hands-on labs for DevOps, Docker, Kubernetes, and Linux fundamentals with a learn-by-doing approach." }
+    ]
+  }
+]

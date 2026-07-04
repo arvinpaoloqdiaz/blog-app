@@ -1,5 +1,5 @@
 /* Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@500;600;700;800&display=swap');
 
 * {
   margin: 0;
@@ -9,102 +9,138 @@
 }
 
 :root {
-  --background: #262626;
-  --shadow: rgba(0,0,0,0.7);
-  --highlight: rgba(255,255,255,0.3);
-  --accent1: rgba(150,123,182,1);
-  --accent2: rgba(200,162,200,1);
-  --contrast: rgba(195,205,230,1);
-  --offwhite: #e8e4e4;
+  --background: #FAFAFA;
+  --surface: #FFFFFF;
+  --shadow: rgba(0, 0, 0, 0.08);
+  --highlight: rgba(150, 123, 182, 0.15);
+  --accent1: #7850a0; /* Deep Purple */
+  --accent2: #967bb6; /* Soft Purple */
+  --accent-gradient: linear-gradient(135deg, var(--accent1), var(--accent2));
+  --text-main: #1A1A24;
+  --text-muted: #5A5A66;
+  --border: #EAEAEA;
 }
 
 /* Global Background */
 .bg-main {
   background: var(--background) !important;
-  color: var(--offwhite) !important;
+  color: var(--text-main) !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Montserrat', sans-serif;
+  color: var(--text-main);
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 /* Button styles */
 .btn-accent {
-  background: var(--accent2);
+  background: var(--accent-gradient);
   color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
   border: none;
-  font-weight: 500;
+  font-weight: 600;
   text-decoration: none;
   cursor: pointer;
-  transition: transform 0.2s ease, background 0.2s ease;
+  box-shadow: 0 4px 15px rgba(120, 80, 160, 0.3);
+  transition: all 0.3s ease;
 }
 .btn-accent:hover {
-  background: var(--accent1);
-  transform: scale(1.05);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(120, 80, 160, 0.4);
+  color: white;
 }
 
 /* Link colors */
 .text-contrast-link {
-  color: var(--contrast);
+  color: var(--accent1);
   text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
 }
 .text-contrast-link:hover {
   color: var(--accent2);
-  text-decoration: underline;
 }
 
-/* Navbar */
+/* Glassmorphism Navbar */
 .custom-navbar {
-  background: var(--background);
-  box-shadow: 0 0px 40px var(--shadow);
+  background: rgba(255, 255, 255, 0.8) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+}
+
+.nav-link-custom {
+  color: var(--text-muted) !important;
+  font-weight: 500;
+  margin: 0 0.5rem;
+  transition: color 0.2s ease;
+  position: relative;
+}
+.nav-link-custom:hover, .nav-link-custom.active {
+  color: var(--accent1) !important;
 }
 
 .custom-navbar-button {
-  background: var(--accent2) !important;
-  color: var(--offwhite) !important;
+  background: var(--accent-gradient) !important;
+  color: white !important;
   font-weight: 600 !important;
-  border-radius: 7px;
-  font-size: 0.85em !important;
-  padding: 0.25rem 0.75rem;
-  text-shadow: 0 0 5px var(--shadow);
-  transition: transform 0.2s ease;
+  border-radius: 8px;
+  font-size: 0.9em !important;
+  padding: 0.4rem 1rem;
+  border: none;
+  box-shadow: 0 4px 15px rgba(120, 80, 160, 0.2);
+  transition: all 0.2s ease;
 }
 .custom-navbar-button:hover {
-  transform: scale(0.95);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(120, 80, 160, 0.3);
 }
 
 /* Footer */
 .custom-footer {
-  background: var(--background);
-  color: var(--offwhite);
-  padding: 1rem 0;
+  background: var(--surface);
+  color: var(--text-muted);
+  padding: 2rem 0;
+  border-top: 1px solid var(--border);
+  margin-top: 4rem;
 }
 
 /* Pagination */
 .page-item.active .page-link {
   color: #fff !important;
   border-color: var(--accent1) !important;
-  background-color: var(--accent2) !important;
+  background-color: var(--accent1) !important;
 }
 .page-link {
-  color: var(--background);
+  color: var(--text-muted);
 }
 
-/* BlogPost & SinglePost adjustments */
+/* Cards */
 .card {
-  border-radius: 8px;
-  background: var(--background);
-  color: var(--offwhite);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text-main);
   padding: 1.5rem;
   margin-bottom: 1.5rem;
-  border: 1px solid var(--highlight);
-  transition: transform 0.2s ease, background 0.2s ease;
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 20px var(--shadow);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 .card:hover {
-  transform: translateY(-2px);
-  background: rgba(50, 50, 50, 0.9);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+  border-color: var(--highlight);
 }
+
+/* App Layout */
 html, body, #root {
   height: 100%;
   margin: 0;
+  background: var(--background);
 }
 
 .app-wrapper {
@@ -114,11 +150,191 @@ html, body, #root {
 }
 
 .main-content {
-  flex: 1; /* pushes footer down */
+  flex: 1;
+  padding-top: 2rem;
 }
-.post-container a{
-    color:var(--accent1) !important;
+
+@media (max-width: 768px) {
+  .main-content {
+    padding-bottom: 5rem; /* clear the bottom tab bar */
+  }
 }
-.post-container a:hover{
-    color:var(--accent2) !important;
+
+.post-container a {
+  color: var(--accent1) !important;
+}
+.post-container a:hover {
+  color: var(--accent2) !important;
+}
+
+
+
+/* Utility */
+.text-gradient {
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ── Rich Typography (Applies to Post Body, Preview, and Editor) ── */
+.post-container h1, .ProseMirror h1,
+.post-container h2, .ProseMirror h2,
+.post-container h3, .ProseMirror h3,
+.post-container h4, .ProseMirror h4 {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-main);
+}
+
+.post-container h1, .ProseMirror h1 { font-size: 1.75rem; }
+.post-container h2, .ProseMirror h2 { font-size: 1.45rem; }
+.post-container h3, .ProseMirror h3 { font-size: 1.2rem; }
+
+.post-container p, .ProseMirror p {
+  margin-bottom: 1.4rem;
+}
+
+.post-container a, .ProseMirror a {
+  color: var(--accent1);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.post-container blockquote, .ProseMirror blockquote {
+  border-left: 3px solid var(--accent1);
+  margin: 1.5rem 0;
+  padding: 0.8rem 1.5rem;
+  font-style: italic;
+  color: var(--text-muted);
+  background: rgba(120, 80, 160, 0.04);
+  border-radius: 0 8px 8px 0;
+}
+
+/* Inline code formatting */
+.post-container code, .ProseMirror code {
+  background: #f0ecf8;
+  color: #6930a0;
+  font-family: "Fira Code", "Courier New", monospace;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.88em;
+  border: 1px solid rgba(120, 80, 160, 0.2);
+}
+
+/* Code block (pre) */
+.post-container pre, .ProseMirror pre {
+  background: #1a1a2e;
+  color: #e2e2ff;
+  padding: 1.25rem;
+  border-radius: 12px;
+  overflow-x: auto;
+  font-size: 0.9rem;
+  margin: 1.5rem 0;
+}
+
+.post-container pre code, .ProseMirror pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  border: none;
+}
+
+.copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #e2e2ff;
+  padding: 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.copy-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.post-container img, .ProseMirror img {
+  max-width: 100%;
+  border-radius: 12px;
+  margin: 1.5rem 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  display: block; /* Allows text-align to work if wrapped */
+}
+
+/* Allow text-align to work on images inside a div or p */
+.post-container p[style*="text-align: center"] img,
+.post-container div[style*="text-align: center"] img,
+.ProseMirror p[style*="text-align: center"] img,
+.ProseMirror div[style*="text-align: center"] img {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.post-container p[style*="text-align: left"] img,
+.post-container div[style*="text-align: left"] img,
+.ProseMirror p[style*="text-align: left"] img,
+.ProseMirror div[style*="text-align: left"] img {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.post-container p[style*="text-align: right"] img,
+.post-container div[style*="text-align: right"] img,
+.ProseMirror p[style*="text-align: right"] img,
+.ProseMirror div[style*="text-align: right"] img {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.post-container ul, .ProseMirror ul,
+.post-container ol, .ProseMirror ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1.4rem;
+}
+
+.post-container li, .ProseMirror li {
+  margin-bottom: 0.4rem;
+}
+
+.post-container hr, .ProseMirror hr {
+  border: none;
+  border-top: 2px solid rgba(120, 80, 160, 0.3);
+  margin: 2.5rem 0;
+}
+
+/* Custom Highlight and Dropcap styles */
+.post-container mark, .ProseMirror mark {
+  background-color: rgba(120, 80, 160, 0.2);
+  color: var(--accent1);
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+.post-container .dropcap,
+.ProseMirror .dropcap {
+  float: left;
+  font-size: 3.3em;
+  line-height: 0.8;
+  margin: 0.1em 0.15em 0 0;
+  color: var(--accent1);
+  font-weight: 800;
+  font-family: "Montserrat", sans-serif;
+  text-transform: uppercase;
+}
+
+/* API Wake Screen spinner */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
 }

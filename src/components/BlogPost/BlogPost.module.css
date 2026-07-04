@@ -1,65 +1,85 @@
 .blogContainer {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  padding: 1rem 0;
+  gap: 0;
+  padding: 0.5rem 0;
 }
 
 .paginationContainer {
   display: flex;
   justify-content: center;
-  margin-top: 1.5rem;
+  margin-top: 2rem;
 }
 
-/* Card styling for posts inside BlogPost */
-.postCard {
-  border-radius: 8px;
-  background: var(--background);
-  color: var(--offwhite);
-  padding: 1.5rem;
-  border: 1px solid var(--highlight);
-  transition: transform 0.2s ease, background 0.2s ease;
+/* ── Skeleton Loader ── */
+@keyframes shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
 }
 
-.postCard:hover {
-  transform: translateY(-2px);
-  background: rgba(50, 50, 50, 0.9);
-}
-
-.postTitle {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 600;
-  font-size: 1.25rem;
-  margin-bottom: 0.3rem;
-}
-
-.postLink {
-  color: var(--contrast);
-  text-decoration: none;
-}
-
-.postLink:hover {
-  color: var(--accent2);
-  text-decoration: underline;
-}
-
-.postAuthor {
-  font-size: 0.85rem;
-  color: var(--contrast);
-  margin-bottom: 0.3rem;
-}
-
-.postDates {
-  font-size: 0.75rem;
-  color: var(--contrast);
+.skeletonList {
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 0.5rem;
+  flex-direction: column;
+  gap: 0;
 }
 
-.tagsContainer {
-  margin-top: 1rem;
+.skeletonItem {
   display: flex;
-  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 1.5rem;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--border, #EBEBF0);
+}
+
+.skeletonDate {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #f0edf5 25%, #e4dff0 50%, #f0edf5 75%);
+  background-size: 600px 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+.skeletonContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding-top: 0.2rem;
+}
+
+.skeletonTitle {
+  height: 18px;
+  width: 70%;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #f0edf5 25%, #e4dff0 50%, #f0edf5 75%);
+  background-size: 600px 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+.skeletonMeta {
+  height: 13px;
+  width: 35%;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #f0edf5 25%, #e4dff0 50%, #f0edf5 75%);
+  background-size: 600px 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+  animation-delay: 0.1s;
+}
+
+.skeletonTags {
+  display: flex;
   gap: 0.5rem;
+  margin-top: 0.2rem;
+}
+
+.skeletonTag {
+  height: 20px;
+  width: 60px;
+  border-radius: 20px;
+  background: linear-gradient(90deg, #f0edf5 25%, #e4dff0 50%, #f0edf5 75%);
+  background-size: 600px 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+  animation-delay: 0.2s;
 }

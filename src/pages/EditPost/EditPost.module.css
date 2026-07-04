@@ -1,145 +1,313 @@
-.editPostContainer {
-  max-width: 700px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
+/* ── Page wrapper ── */
+.page {
+  min-height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+  background: var(--background);
 }
 
-.header {
-  font-size: 2rem;
-  font-weight: 600;
-  margin-bottom: 2rem;
+/* ── Top header bar ── */
+.pageHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  background: var(--surface);
+  border-bottom: 1.5px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  gap: 1rem;
+}
+
+.headerCenter {
   text-align: center;
+  flex: 1;
 }
 
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+.pageTitle {
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.formGroup {
-  display: flex;
-  flex-direction: column;
+.pageSubtitle {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin: 0;
 }
 
-.formGroup label {
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: var(--offwhite);
-  margin-bottom: 0.5rem;
-}
-
-/* Rich editor wrapper: allow overflow so tooltip isn't clipped */
-.richEditor {
-  margin-top: 0.5rem;
-  background: #ffffff; /* light "paper" look */
-  border-radius: 10px;
-  color: #000;
-  border: 1px solid #ccc;
-  overflow: visible; /* IMPORTANT: allow the tooltip to overflow */
-}
-.ql-container.ql-snow{
-    border:1px solid rgba(0,0,0,0) !important;
-}
-.ql-toolbar.ql-snow{
-    border:none !important;
-}
-/* Toolbar */
-.richEditor .ql-toolbar {
-  background: #f8f9fa;
+.saveBtn {
+  background: var(--accent-gradient);
+  color: white;
   border: none;
-  border-bottom: 1px solid #ddd;
-  border-radius: 10px 10px 0 0;
-  z-index: 2;
+  padding: 0.55rem 1.4rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(120, 80, 160, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
-/* Make sure toolbar icons are visible */
-.richEditor .ql-toolbar button svg {
-  fill: #333;
+.saveBtn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(120, 80, 160, 0.45);
 }
 
-/* Editor container: let it size by content but provide a min-height */
-.richEditor .ql-container {
-  border: none !important;
-  font-size: 1rem;
-  font-family: var(--font);
-  height: auto !important;       /* let the container size naturally */
-  min-height: 260px !important;  /* start tall enough */
-  max-height: 60vh;              /* avoid extremely tall editors */
-  overflow: auto;                /* allow internal scrolling if content huge */
+.saveBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
 }
 
-/* Editor content */
-.richEditor .ql-editor {
-  padding: 1rem;
-  line-height: 1.6;
-  color: #000;
-  min-height: 240px; /* visible writing area from the start */
-  white-space: pre-wrap; /* preserve newlines nicely */
+/* ── Split pane ── */
+.splitPane {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  flex: 1;
+  overflow: hidden;
+  height: calc(100vh - 130px);
 }
 
-/* Quill tooltip (link dialog, etc.) */
-.richEditor .ql-tooltip {
-  z-index: 10000 !important; /* float above everything */
-  width: 360px;              /* make the dialog wide enough */
-  left: 50% !important;      /* center-ish positioning */
-  transform: translateX(-50%) !important;
-}
-
-/* Input inside tooltip (link url input) */
-.richEditor .ql-tooltip input[type="text"],
-.richEditor .ql-tooltip input[type="url"] {
-  width: calc(100% - 70px); /* leave space for action buttons */
-  display: inline-block;
-}
-
-/* Tooltip action buttons (apply/cancel) spacing */
-.richEditor .ql-tooltip .ql-action {
-  margin-left: 6px;
-}
-
-/* Small responsive tweak */
-@media (max-width: 480px) {
-  .richEditor .ql-tooltip {
-    width: 92% !important;
-    left: 4% !important;
-    transform: none !important;
+@media (max-width: 900px) {
+  .splitPane {
+    grid-template-columns: 1fr;
+    height: auto;
+    overflow: visible;
   }
 }
 
+/* ── Editor panel (left) ── */
+.editorPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1.5rem;
+  overflow-y: auto;
+  border-right: 1.5px solid var(--border);
+  background: var(--background);
+}
 
-/* Submit Button */
-.submitBtn {
-  padding: 0.9rem 1.5rem;
-  border: 1px solid var(--accent1) !important;
-  border-radius: 12px;
-  background: var(--accent1) !important;
-  color: white;
-  font-size: 1rem;
+/* ── Meta fields grid ── */
+.metaGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.fullWidth {
+  grid-column: 1 / -1;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.label {
+  font-size: 0.82rem;
   font-weight: 600;
-  cursor: pointer;
-  transition: background 0.3s ease;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 
-.submitBtn:hover {
-  background: var(--accent2) !important;
+.input {
+  padding: 0.65rem 0.9rem;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: var(--text-main);
+  background: var(--surface);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+  font-family: "Inter", sans-serif;
 }
 
-.submitBtn:disabled {
-  background: #ccc;
-  cursor: not-allowed;
+.input:focus {
+  border-color: var(--accent1);
+  box-shadow: 0 0 0 3px rgba(120, 80, 160, 0.1);
 }
 
-/* Tags */
-.tagsPreview {
-  margin-top: 0.5rem;
+.input::placeholder {
+  color: #c4c4cc;
+}
+
+/* ── Tag chips ── */
+.tagChips {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.4rem;
 }
 
-.tagChip {
-  padding: 0.4rem 0.8rem;
+.chip {
+  background: rgba(120, 80, 160, 0.12);
+  color: var(--accent1);
   border-radius: 20px;
-  font-size: 0.85rem;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+/* ── Editor area ── */
+.editorArea {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex: 1;
+}
+
+/* ── Preview panel (right) ── */
+.previewPanel {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.previewHeader {
+  padding: 0.75rem 1.5rem;
+  border-bottom: 1.5px solid var(--border);
+  background: #faf7ff;
+  display: flex;
+  align-items: center;
+}
+
+.previewBadge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent1);
+  background: rgba(120, 80, 160, 0.1);
+  padding: 0.25rem 0.7rem;
+  border-radius: 20px;
+}
+
+.previewScroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+}
+
+.previewCover {
+  width: 100%;
+  max-height: 280px;
+  object-fit: cover;
+  display: block;
+}
+
+.previewMeta {
+  padding: 2rem 2rem 0;
+}
+
+.previewTitle {
+  font-size: 1.8rem;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.03em;
+  color: var(--text-main);
+  margin-bottom: 0.5rem;
+}
+
+.previewByline {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.previewTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.previewChip {
+  background: rgba(120, 80, 160, 0.1);
+  color: var(--accent1);
+  border-radius: 20px;
+  padding: 0.2rem 0.65rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.previewDivider {
+  height: 1.5px;
+  background: var(--border);
+  margin-bottom: 2rem;
+  border-radius: 2px;
+}
+
+.previewContent {
+  padding: 1rem 2rem 3rem;
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--text-main);
+}
+
+/* ── Loading skeleton ── */
+.skeletonBody {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.skeletonTitle {
+  height: 1.2rem;
+  width: 40%;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #ece6f5 25%, #f5f0ff 50%, #ece6f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+.skeletonSub {
+  height: 0.7rem;
+  width: 25%;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #ece6f5 25%, #f5f0ff 50%, #ece6f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+.skeletonBtn {
+  width: 110px;
+  height: 36px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #ece6f5 25%, #f5f0ff 50%, #ece6f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  flex-shrink: 0;
+}
+
+.skeletonLine {
+  height: 0.85rem;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #ece6f5 25%, #f5f0ff 50%, #ece6f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* responsive */
+@media (max-width: 900px) {
+  .splitPane { height: auto; }
+  .previewPanel { min-height: 400px; border-top: 1.5px solid var(--border); }
+  .editorPanel { border-right: none; }
+  .metaGrid { grid-template-columns: 1fr; }
 }

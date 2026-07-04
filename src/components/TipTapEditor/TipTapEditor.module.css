@@ -1,0 +1,147 @@
+/* ── Wrapper ── */
+.editorWrapper {
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  height: 600px;
+  max-height: 70vh;
+}
+
+.editorWrapper:focus-within {
+  border-color: var(--accent1);
+  box-shadow: 0 0 0 3px rgba(120, 80, 160, 0.12);
+}
+
+/* ── Toolbar ── */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 10px;
+  background: #f7f5fb;
+  border-bottom: 1.5px solid var(--border);
+}
+
+.toolBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.toolBtn:hover {
+  background: rgba(120, 80, 160, 0.1);
+  color: var(--accent1);
+}
+
+.toolBtn.active {
+  background: rgba(120, 80, 160, 0.15);
+  color: var(--accent1);
+  font-weight: 700;
+}
+
+.toolBtnDisabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.toolSelect {
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  border-radius: 6px;
+  padding: 4px 6px;
+  margin: 0 4px;
+  outline: none;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+}
+
+.headingBtn {
+  font-size: 0.72rem;
+  font-weight: 700;
+  font-family: "Montserrat", sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.divider {
+  width: 1px;
+  height: 20px;
+  background: var(--border);
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+
+/* ── Editor content area ── */
+.editorContent {
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* Custom scrollbar for editor */
+.editorContent::-webkit-scrollbar {
+  width: 8px;
+}
+.editorContent::-webkit-scrollbar-track {
+  background: transparent;
+}
+.editorContent::-webkit-scrollbar-thumb {
+  background: rgba(120, 80, 160, 0.2);
+  border-radius: 4px;
+}
+.editorContent::-webkit-scrollbar-thumb:hover {
+  background: rgba(120, 80, 160, 0.4);
+}
+
+.editorContent :global(.tiptap) {
+  min-height: 320px;
+  padding: 1.2rem 1.4rem;
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--text-main);
+  font-family: "Inter", sans-serif;
+  outline: none;
+}
+
+/* Placeholder */
+.editorContent :global(.tiptap p.is-editor-empty:first-child::before) {
+  content: attr(data-placeholder);
+  color: #bbb;
+  pointer-events: none;
+  float: left;
+  height: 0;
+}
+
+.colorPicker {
+  width: 26px;
+  height: 26px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0 4px;
+}
+
+.colorPicker::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.colorPicker::-webkit-color-swatch {
+  border: 1.5px solid var(--border);
+  border-radius: 4px;
+}
