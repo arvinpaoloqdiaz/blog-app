@@ -268,6 +268,7 @@ export default function TipTapEditor({ value, onChange, placeholder = "Write som
           value={
             editor.isActive({ textAlign: "center" }) ? "center" :
             editor.isActive({ textAlign: "right" }) ? "right" :
+            editor.isActive({ textAlign: "justify" }) ? "justify" :
             "left"
           }
           onChange={(e) => editor.chain().focus().setTextAlign(e.target.value).run()}
@@ -276,6 +277,7 @@ export default function TipTapEditor({ value, onChange, placeholder = "Write som
           <option value="left">Left Align</option>
           <option value="center">Center Align</option>
           <option value="right">Right Align</option>
+          <option value="justify">Justify</option>
         </select>
         <Divider />
 
