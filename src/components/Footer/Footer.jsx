@@ -10,7 +10,7 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   const socials = [
-    { href: "https://apqdiaz.site/", icon: faA, label: "Portfolio", cls: "portfolio" },
+    { href: "https://apqdiaz.online/", icon: faA, label: "Portfolio", cls: "portfolio" },
     { href: "https://www.linkedin.com/in/arvin-paolo-diaz/", icon: faLinkedin, label: "LinkedIn", cls: "linkedin" },
     { href: "https://github.com/arvinpaoloqdiaz", icon: faGithub, label: "GitHub", cls: "github" },
     { href: "https://codepen.io/Arvin-Paolo-Diaz", icon: faCodepen, label: "CodePen", cls: "codepen" }
@@ -37,10 +37,10 @@ export default function Footer() {
             <div className={styles.contactWrapper}>
               <h3 className={styles.contactTitle}>Let’s Connect</h3>
               <p className={styles.contactLine}>
-                <FontAwesomeIcon icon={faPhone} style={{marginRight: '0.5rem'}} /> +63 927 322 2484
+                <FontAwesomeIcon icon={faPhone} style={{ marginRight: '0.5rem' }} /> +63 927 322 2484
               </p>
               <p className={styles.contactLine}>
-                <FontAwesomeIcon icon={faEnvelope} style={{marginRight: '0.5rem'}} /> <a className={styles.mailLink} href="mailto:arvinpaoloq.diaz@gmail.com">
+                <FontAwesomeIcon icon={faEnvelope} style={{ marginRight: '0.5rem' }} /> <a className={styles.mailLink} href="mailto:arvinpaoloq.diaz@gmail.com">
                   arvinpaoloq.diaz@gmail.com
                 </a>
               </p>
