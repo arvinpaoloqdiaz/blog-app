@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import Writing from "./pages/Writing/Writing";
 import CreatePost from "./pages/CreatePost/CreatePost";
 import EditPost from "./pages/EditPost/EditPost";
+import AdminPosts from "./pages/AdminPosts/AdminPosts";
 import SpecificPost from "./pages/SpecificPost/SpecificPost";
 import Projects from "./pages/Projects/Projects";
 import Gallery from "./pages/Gallery/Gallery";
@@ -69,6 +70,7 @@ function AnimatedRoutes() {
         <Route path="/logout" element={<Animated><Logout /></Animated>} />
 
         {/* Admin-only */}
+        <Route path="/admin/posts" element={<AdminRoute><Animated><AdminPosts /></Animated></AdminRoute>} />
         <Route path="/create" element={<AdminRoute><Animated><CreatePost /></Animated></AdminRoute>} />
         <Route path="/writing/:postId/edit" element={<AdminRoute><Animated><EditPost /></Animated></AdminRoute>} />
 

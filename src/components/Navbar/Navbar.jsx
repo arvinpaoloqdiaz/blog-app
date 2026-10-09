@@ -11,6 +11,7 @@ import {
   faBookmark,
   faHourglassHalf,
   faScrewdriverWrench,
+  faList,
 } from "@fortawesome/free-solid-svg-icons";
 import UserContext from "../../UserContext";
 import styles from "./Navbar.module.css";
@@ -92,9 +93,14 @@ export default function AppNavbar() {
           {/* Right: Admin + Auth */}
           <div className={styles.navActions}>
             {(user.isAdmin || user.id) && (
-              <Link to="/create" className={styles.adminIcon} title="New Post">
-                <FontAwesomeIcon icon={faSquarePlus} />
-              </Link>
+              <>
+                <Link to="/admin/posts" className={styles.adminIcon} title="Manage Posts">
+                  <FontAwesomeIcon icon={faList} />
+                </Link>
+                <Link to="/create" className={styles.adminIcon} title="New Post">
+                  <FontAwesomeIcon icon={faSquarePlus} />
+                </Link>
+              </>
             )}
             {user.id ? (
               <Link to="/logout" className={styles.authButton}>Logout</Link>

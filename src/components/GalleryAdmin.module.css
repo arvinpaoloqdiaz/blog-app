@@ -1,0 +1,536 @@
+/* =========================================
+   Cloudinary Usage Dashboard (Minimal)
+   ========================================= */
+
+.usageSection {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 1.4rem 1.8rem;
+  margin-bottom: 2rem;
+}
+
+.usageSectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.2rem;
+}
+
+.usageTitleGroup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.usageTitleText {
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-family: 'Montserrat', sans-serif;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.planBadge {
+  background: rgba(120, 80, 160, 0.1);
+  color: var(--accent1);
+  border: 1px solid rgba(120, 80, 160, 0.3);
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.refreshBtn {
+  background: transparent;
+  border: 1.5px solid var(--border);
+  color: var(--text-muted);
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.8rem;
+}
+
+.refreshBtn:hover:not(:disabled) {
+  border-color: var(--accent1);
+  color: var(--accent1);
+}
+
+.refreshBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.usageError {
+  color: #e74c3c;
+  font-size: 0.85rem;
+  margin-bottom: 0.8rem;
+}
+
+/* Inline stat row */
+.miniStatRow {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-wrap: wrap;
+  margin-bottom: 1.2rem;
+  background: var(--bg-main);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 0.8rem 1.2rem;
+}
+
+.miniStat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 1.2rem;
+}
+
+.miniStat:first-child {
+  padding-left: 0;
+}
+
+.miniStatValue {
+  font-size: 1.25rem;
+  font-weight: 700;
+  font-family: 'Montserrat', sans-serif;
+  color: var(--text-main);
+  line-height: 1;
+}
+
+.miniStatLabel {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 3px;
+}
+
+.miniStatDivider {
+  width: 1px;
+  height: 28px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+.green { color: #27ae60 !important; }
+
+/* Slim meters */
+.miniMeters {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.miniMeter {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.miniMeterTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.miniMeterLabel {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.miniMeterValues {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  font-size: 0.82rem;
+}
+
+.miniMeterLimit {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.miniMeterPct {
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-left: 4px;
+}
+
+.miniTrack {
+  width: 100%;
+  height: 4px;
+  background: var(--border);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.miniBar {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.6s ease;
+}
+
+/* =========================================
+   Upload Section
+   ========================================= */
+
+
+.uploadSectionOption1 {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 2.5rem;
+  margin-bottom: 3rem;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+}
+
+.uploadTitle {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.uploadTitleIcon {
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.formLabel {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.optionalTag {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
+.formControl {
+  background-color: var(--bg-main) !important;
+  border: 1.5px solid var(--border) !important;
+  color: var(--text-main) !important;
+  border-radius: 8px !important;
+  padding: 0.75rem 1rem !important;
+  transition: all 0.2s ease !important;
+}
+
+.formControl:focus {
+  border-color: var(--accent1) !important;
+  box-shadow: 0 0 0 3px rgba(120, 80, 160, 0.15) !important;
+}
+
+/* --- File Picker Dropzone --- */
+.filePicker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 130px;
+  border: 2px dashed var(--border);
+  border-radius: 10px;
+  background: var(--bg-main);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.filePicker:hover {
+  border-color: var(--accent1);
+  background: rgba(120, 80, 160, 0.04);
+}
+
+.filePickerInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  pointer-events: none;
+}
+
+.filePickerIcon {
+  font-size: 1.6rem;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 4px;
+}
+
+.filePickerText {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-main);
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.filePickerSub {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* --- Bottom Row (Grid + Toggle + Submit) --- */
+.bottomRow {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.gridSpanGroup {
+  flex: 0 0 auto;
+}
+
+/* --- Square Grid Inputs --- */
+.gridInputs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.squareInputWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.squareInput {
+  width: 72px !important;
+  height: 72px !important;
+  padding: 0 !important;
+  text-align: center !important;
+  font-size: 1.4rem !important;
+  font-weight: 700 !important;
+  border-radius: 10px !important;
+}
+
+/* Remove number input spin buttons */
+.squareInput::-webkit-outer-spin-button,
+.squareInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.squareInput[type='number'] {
+  -moz-appearance: textfield;
+}
+
+.squareInputLabel {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.gridSeparator {
+  font-size: 1.4rem;
+  font-weight: 300;
+  color: var(--text-muted);
+  padding-bottom: 22px;
+  user-select: none;
+}
+
+/* --- Gallery Pill Toggle --- */
+.galleryToggleWrapper {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 22px;
+}
+
+.galleryPillToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0.65rem 1.4rem;
+  border-radius: 50px;
+  border: 1.5px solid var(--border);
+  background: var(--bg-main);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.galleryPillToggle:hover {
+  border-color: var(--accent1);
+  color: var(--text-main);
+}
+
+.galleryPillActive {
+  background: rgba(120, 80, 160, 0.12);
+  border-color: var(--accent1);
+  color: var(--accent1);
+}
+
+.galleryPillDot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  transition: background 0.25s ease, transform 0.25s ease;
+  flex-shrink: 0;
+}
+
+.galleryPillActive .galleryPillDot {
+  background: var(--accent1);
+  transform: scale(1.2);
+}
+
+.galleryPillLabel {
+  line-height: 1;
+}
+
+/* --- Submit Button --- */
+.submitBtn {
+  background: var(--accent-gradient) !important;
+  border: none !important;
+  padding: 0.75rem 1.5rem !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  transition: transform 0.2s, box-shadow 0.2s !important;
+  white-space: nowrap;
+}
+
+.submitBtn:hover:not(:disabled) {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(120, 80, 160, 0.3) !important;
+}
+
+.submitBtn:disabled {
+  opacity: 0.6;
+}
+
+/* --- Images Table --- */
+.tableContainer {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+  margin-bottom: 3rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  background: rgba(120, 80, 160, 0.04);
+  text-align: left;
+  padding: 1rem 1.2rem;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  border-bottom: 1.5px solid var(--border);
+}
+
+.table td {
+  padding: 1rem 1.2rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.imagePreviewWrapper {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.imagePreviewWrapper:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: var(--accent1);
+}
+
+.actionBtn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.actionBtn:hover {
+  background: rgba(120, 80, 160, 0.1);
+  color: var(--accent1);
+  border-color: var(--accent1);
+}
+
+.actionEdit:hover {
+  background: rgba(41, 128, 185, 0.1);
+  color: #2980b9;
+  border-color: #2980b9;
+}
+
+.actionDel:hover {
+  background: rgba(231, 76, 60, 0.1);
+  color: #e74c3c;
+  border-color: #e74c3c;
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  margin-bottom: 4px;
+}
+
+.badgeSuccess {
+  background: rgba(46, 204, 113, 0.15);
+  color: #27ae60;
+}
+
+.badgeSecondary {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--text-muted);
+}
+
+

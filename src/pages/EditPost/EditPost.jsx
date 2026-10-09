@@ -5,6 +5,7 @@ import DOMPurify from "dompurify";
 
 import BackButton from "../../components/BackButton/BackButton";
 import TipTapEditor from "../../components/TipTapEditor/TipTapEditor";
+import GalleryImagePicker from "../../components/GalleryImagePicker/GalleryImagePicker";
 import api from "../../utils/api";
 import useCodeCopyButtons from "../../hooks/useCodeCopyButtons";
 import styles from "./EditPost.module.css";
@@ -20,9 +21,12 @@ export default function EditPost() {
   const [content, setContent] = useState("");
   const [unformattedTags, setUnformattedTags] = useState("");
   const [tags, setTags] = useState([]);
+  const [isPortfolio, setIsPortfolio] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isActive, setIsActive] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [autoSaveStatus, setAutoSaveStatus] = useState("");
+  const DRAFT_KEY = `blog_edit_draft_${postId}`;
 
   useCodeCopyButtons(content);
 
@@ -32,7 +36,7 @@ export default function EditPost() {
       try {
         const data = await api.get(`/v1/blog/posts/${postId}`);
         if (data.success && data.data) {
-          const { title, author, thumbnail, coverPhoto, content, tags } = data.data;
+          const { title, author, thumbnail, coverPhoto, content, tags, isPortfolio } = data.data;
           setTitle(title);
           setAuthor(author || "Arvin Paolo Diaz");
           setThumbnail(thumbnail || "");
@@ -40,6 +44,38 @@ export default function EditPost() {
           setContent(content || "");
           setTags(tags || []);
           setUnformattedTags(tags?.join(", ") || "");
+          setIsPortfolio(isPortfolio || false);
+          
+          // Check for localStorage draft after fetching real data
+          const saved = localStorage.getItem(DRAFT_KEY);
+          if (saved) {
+            try {
+              const parsed = JSON.parse(saved);
+              if (Date.now() - parsed.timestamp < 7 * 24 * 60 * 60 * 1000) {
+                Swal.fire({
+                  title: "Restore Draft?",
+                  text: "We found an unsaved browser draft for this post. Do you want to restore it?",
+                  icon: "question",
+                  showCancelButton: true,
+                  confirmButtonText: "Restore",
+                  cancelButtonText: "Discard",
+                  confirmButtonColor: "#7850a0"
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    setTitle(parsed.title || "");
+                    setAuthor(parsed.author || "Arvin Paolo Diaz");
+                    setThumbnail(parsed.thumbnail || "");
+                    setCoverPhoto(parsed.coverPhoto || "");
+                    setContent(parsed.content || "");
+                    setUnformattedTags(parsed.unformattedTags || "");
+                    setIsPortfolio(parsed.isPortfolio || false);
+                  } else {
+                    localStorage.removeItem(DRAFT_KEY);
+                  }
+                });
+              }
+            } catch(e) {}
+          }
         }
       } catch (err) {
         Swal.fire("Error", "Could not fetch post details.", "error");
@@ -66,25 +102,39 @@ export default function EditPost() {
     setIsActive(title.trim() !== "" && !emptyContent);
   }, [title, content]);
 
+  // ── Auto-save logic ──────────────────────────────────────────────────────
+  useEffect(() => {
+    if (loading || (!title && !content)) return;
+    const timer = setTimeout(() => {
+      const draftData = {
+        title, author, thumbnail, coverPhoto, content, unformattedTags, isPortfolio, timestamp: Date.now()
+      };
+      localStorage.setItem(DRAFT_KEY, JSON.stringify(draftData));
+      setAutoSaveStatus(`Saved to browser at ${new Date().toLocaleTimeString()}`);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [title, author, thumbnail, coverPhoto, content, unformattedTags, isPortfolio, loading]);
+
   // ── Save / update ────────────────────────────────────────────────────────
-  const updatePost = async (e) => {
-    e?.preventDefault();
+  const updatePost = async (isDraft = false) => {
+    if (isDraft && typeof isDraft !== "boolean") isDraft = false;
     setIsSubmitting(true);
     try {
       const data = await api.put(
         `/v1/blog/posts/${postId}`,
-        { title, author, thumbnail, coverPhoto, content, tags },
+        { title, author, thumbnail, coverPhoto, content, tags, isPortfolio, isDraft },
         true
       );
 
       if (data.success) {
+        localStorage.removeItem(DRAFT_KEY);
         Swal.fire({
-          title: "Saved!",
+          title: isDraft ? "Saved as Draft" : "Saved!",
           icon: "success",
-          text: "Post updated successfully.",
+          text: isDraft ? "Your post was saved as a draft." : "Post updated successfully.",
           confirmButtonColor: "#7850a0",
         });
-        navigate(`/writing/${postId}`);
+        navigate(isDraft ? "/admin/posts" : `/writing/${postId}`);
       } else {
         throw new Error(data.message || "Update failed");
       }
@@ -130,14 +180,25 @@ export default function EditPost() {
           <h1 className={styles.pageTitle}>Edit Post</h1>
           <p className={styles.pageSubtitle}>Update your post and preview changes live</p>
         </div>
-        <button
-          className={styles.saveBtn}
-          onClick={updatePost}
-          disabled={!isActive || isSubmitting}
-          type="button"
-        >
-          {isSubmitting ? "Saving…" : "Save Changes"}
-        </button>
+        <div className={styles.headerActions}>
+          <span className={styles.autoSaveStatus}>{autoSaveStatus}</span>
+          <button
+            className={styles.draftBtn}
+            onClick={() => updatePost(true)}
+            disabled={!isActive || isSubmitting}
+            type="button"
+          >
+            Save as Draft
+          </button>
+          <button
+            className={styles.saveBtn}
+            onClick={() => updatePost(false)}
+            disabled={!isActive || isSubmitting}
+            type="button"
+          >
+            {isSubmitting ? "Saving…" : "Save Changes"}
+          </button>
+        </div>
       </div>
 
       {/* ── Split pane ── */}
@@ -187,27 +248,44 @@ export default function EditPost() {
             {/* Thumbnail */}
             <div className={styles.field}>
               <label className={styles.label} htmlFor="editThumb">Thumbnail URL</label>
-              <input
+              <GalleryImagePicker
                 id="editThumb"
-                className={styles.input}
-                type="url"
-                placeholder="https://…"
                 value={thumbnail}
-                onChange={(e) => setThumbnail(e.target.value)}
+                onChange={setThumbnail}
+                placeholder="https://… or pick from gallery"
+                inputClassName={styles.input}
               />
             </div>
 
             {/* Cover Photo */}
             <div className={styles.field}>
               <label className={styles.label} htmlFor="editCover">Cover Photo URL</label>
-              <input
+              <GalleryImagePicker
                 id="editCover"
-                className={styles.input}
-                type="url"
-                placeholder="https://…"
                 value={coverPhoto}
-                onChange={(e) => setCoverPhoto(e.target.value)}
+                onChange={setCoverPhoto}
+                placeholder="https://… or pick from gallery"
+                inputClassName={styles.input}
               />
+            </div>
+
+            {/* Is Portfolio Toggle */}
+            <div className={`${styles.field} ${styles.fullWidth}`}>
+              <label className={styles.switchLabel}>
+                <div className={styles.switchText}>
+                  <span className={styles.switchTitle}>Portfolio Item</span>
+                  <span className={styles.switchDesc}>Display this post on your portfolio site</span>
+                </div>
+                <div className={styles.switchControl}>
+                  <input 
+                    type="checkbox"
+                    checked={isPortfolio}
+                    onChange={(e) => setIsPortfolio(e.target.checked)}
+                    className={styles.switchInput}
+                  />
+                  <span className={styles.switchSlider}></span>
+                </div>
+              </label>
             </div>
 
             {/* Tag chips */}

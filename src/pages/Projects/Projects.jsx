@@ -3,8 +3,7 @@ import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRocket } from "@fortawesome/free-solid-svg-icons";
 import styles from "./Projects.module.css";
-
-const JSON_URL = "https://raw.githubusercontent.com/arvinpaoloqdiaz/files/json/ProjectList.json";
+import { supabase } from "../../lib/supabase";
 
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -18,21 +17,21 @@ export default function Projects() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchProjects = () => {
-    fetch(JSON_URL)
-      .then((r) => r.json())
-      .then((data) => {
-        const blogProjects = (data.ProjectList || [])
-          .filter((p) => p.is_on_blog)
-          .map((p) => ({
-            ...p,
-            id: p.slug,
-            image_link: p.image_link?.replace("../images/", `${import.meta.env.VITE_EXTERNAL_LINK}/images/`)
-          }));
-        setProjects(blogProjects);
-      })
-      .catch(console.error)
-      .finally(() => setLoading(false));
+  const fetchProjects = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("projects")
+        .select("*")
+        .eq("is_on_blog", true)
+        .order("created_at", { ascending: false });
+
+      if (error) throw error;
+      setProjects((data ?? []).map((p) => ({ ...p, id: p.slug })));
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => { fetchProjects(); }, []);

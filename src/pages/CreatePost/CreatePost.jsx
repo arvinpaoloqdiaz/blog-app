@@ -6,6 +6,7 @@ import DOMPurify from "dompurify";
 import UserContext from "../../UserContext";
 import BackButton from "../../components/BackButton/BackButton";
 import TipTapEditor from "../../components/TipTapEditor/TipTapEditor";
+import GalleryImagePicker from "../../components/GalleryImagePicker/GalleryImagePicker";
 import api from "../../utils/api";
 import useCodeCopyButtons from "../../hooks/useCodeCopyButtons";
 import styles from "./CreatePost.module.css";
@@ -21,8 +22,11 @@ export default function CreatePost() {
   const [content, setContent] = useState("");
   const [unformattedTags, setUnformattedTags] = useState("");
   const [tags, setTags] = useState([]);
+  const [isPortfolio, setIsPortfolio] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [autoSaveStatus, setAutoSaveStatus] = useState("");
+  const DRAFT_KEY = "blog_create_draft";
 
   // Add copy buttons to code blocks in preview
   useCodeCopyButtons(content);
@@ -42,24 +46,71 @@ export default function CreatePost() {
     );
   }, [unformattedTags]);
 
-  const createPost = async (e) => {
-    e.preventDefault();
+  // Restore draft on load
+  useEffect(() => {
+    const saved = localStorage.getItem(DRAFT_KEY);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Date.now() - parsed.timestamp < 7 * 24 * 60 * 60 * 1000) {
+          Swal.fire({
+            title: "Restore Draft?",
+            text: "We found an unsaved draft. Do you want to restore it?",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonText: "Restore",
+            cancelButtonText: "Discard",
+            confirmButtonColor: "#7850a0"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              setTitle(parsed.title || "");
+              setAuthor(parsed.author || "Arvin Paolo Diaz");
+              setThumbnail(parsed.thumbnail || "");
+              setCoverPhoto(parsed.coverPhoto || "");
+              setContent(parsed.content || "");
+              setUnformattedTags(parsed.unformattedTags || "");
+              setIsPortfolio(parsed.isPortfolio || false);
+            } else {
+              localStorage.removeItem(DRAFT_KEY);
+            }
+          });
+        }
+      } catch (e) {}
+    }
+  }, []);
+
+  // Auto-save logic
+  useEffect(() => {
+    if (!title && !content) return;
+    const timer = setTimeout(() => {
+      const draftData = {
+        title, author, thumbnail, coverPhoto, content, unformattedTags, isPortfolio, timestamp: Date.now()
+      };
+      localStorage.setItem(DRAFT_KEY, JSON.stringify(draftData));
+      setAutoSaveStatus(`Saved to browser at ${new Date().toLocaleTimeString()}`);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [title, author, thumbnail, coverPhoto, content, unformattedTags, isPortfolio]);
+
+  const createPost = async (isDraft = false) => {
+    if (isDraft && typeof isDraft !== "boolean") isDraft = false; // protect against event object
     setIsSubmitting(true);
     try {
       const data = await api.post(
         "/v1/blog/posts",
-        { title, author, thumbnail, coverPhoto, content, tags },
+        { title, author, thumbnail, coverPhoto, content, tags, isPortfolio, isDraft },
         true
       );
 
       if (data.success) {
+        localStorage.removeItem(DRAFT_KEY);
         Swal.fire({
-          title: "Post Published!",
+          title: isDraft ? "Saved as Draft" : "Post Published!",
           icon: "success",
-          text: "Your post went live successfully.",
+          text: isDraft ? "Your draft has been saved successfully." : "Your post went live successfully.",
           confirmButtonColor: "#7850a0",
         });
-        navigate("/");
+        navigate("/admin/posts");
       } else {
         throw new Error(data.message || "Something went wrong!");
       }
@@ -86,14 +137,25 @@ export default function CreatePost() {
           <h1 className={styles.pageTitle}>Create Post</h1>
           <p className={styles.pageSubtitle}>Write and preview your post in real time</p>
         </div>
-        <button
-          className={styles.publishBtn}
-          onClick={createPost}
-          disabled={!isActive || isSubmitting}
-          type="button"
-        >
-          {isSubmitting ? "Publishing…" : "Publish Post"}
-        </button>
+        <div className={styles.headerActions}>
+          <span className={styles.autoSaveStatus}>{autoSaveStatus}</span>
+          <button
+            className={styles.draftBtn}
+            onClick={() => createPost(true)}
+            disabled={!isActive || isSubmitting}
+            type="button"
+          >
+            Save as Draft
+          </button>
+          <button
+            className={styles.publishBtn}
+            onClick={() => createPost(false)}
+            disabled={!isActive || isSubmitting}
+            type="button"
+          >
+            {isSubmitting ? "Publishing…" : "Publish Post"}
+          </button>
+        </div>
       </div>
 
       {/* ── Split pane ── */}
@@ -143,27 +205,44 @@ export default function CreatePost() {
             {/* Thumbnail */}
             <div className={styles.field}>
               <label className={styles.label} htmlFor="postThumb">Thumbnail URL</label>
-              <input
+              <GalleryImagePicker
                 id="postThumb"
-                className={styles.input}
-                type="url"
-                placeholder="https://…"
                 value={thumbnail}
-                onChange={(e) => setThumbnail(e.target.value)}
+                onChange={setThumbnail}
+                placeholder="https://… or pick from gallery"
+                inputClassName={styles.input}
               />
             </div>
 
             {/* Cover Photo */}
             <div className={styles.field}>
               <label className={styles.label} htmlFor="postCover">Cover Photo URL</label>
-              <input
+              <GalleryImagePicker
                 id="postCover"
-                className={styles.input}
-                type="url"
-                placeholder="https://…"
                 value={coverPhoto}
-                onChange={(e) => setCoverPhoto(e.target.value)}
+                onChange={setCoverPhoto}
+                placeholder="https://… or pick from gallery"
+                inputClassName={styles.input}
               />
+            </div>
+
+            {/* Is Portfolio Toggle */}
+            <div className={`${styles.field} ${styles.fullWidth}`}>
+              <label className={styles.switchLabel}>
+                <div className={styles.switchText}>
+                  <span className={styles.switchTitle}>Portfolio Item</span>
+                  <span className={styles.switchDesc}>Display this post on your portfolio site</span>
+                </div>
+                <div className={styles.switchControl}>
+                  <input 
+                    type="checkbox"
+                    checked={isPortfolio}
+                    onChange={(e) => setIsPortfolio(e.target.checked)}
+                    className={styles.switchInput}
+                  />
+                  <span className={styles.switchSlider}></span>
+                </div>
+              </label>
             </div>
 
             {/* Tag chips preview */}
