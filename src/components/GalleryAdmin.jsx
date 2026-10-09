@@ -211,7 +211,7 @@ function ZonePicker({ value, onChange }) {
   );
 }
 
-function SortableBentoItem({ img, onZoneChange }) {
+function SortableBentoItem({ img, onZoneChange, onMove }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: img._id });
   const [zonePickerOpen, setZonePickerOpen] = useState(false);
   const [changingZone, setChangingZone] = useState(false);
@@ -245,13 +245,29 @@ function SortableBentoItem({ img, onZoneChange }) {
     setChangingZone(false);
   };
 
+  const handleContextMenu = (e) => {
+    e.preventDefault();
+    setZonePickerOpen(true);
+  };
+
   return (
     <div
       ref={setNodeRef}
+      onContextMenu={handleContextMenu}
       style={{ transform: CSS.Transform.toString(transform), transition, opacity: isDragging ? 0.3 : 1 }}
       className={`${styles.previewBentoItem} ${zoneClass}`}
     >
       <img src={getTransformedUrl(img.imageUrl)} alt={img.altText || ''} className={styles.previewBentoImg} draggable={false} />
+
+      {/* Manual Move Arrows */}
+      <div className={styles.previewManualMove}>
+        <button className={styles.previewManualBtn} onClick={(e) => { e.stopPropagation(); onMove(img._id, -1); }} title="Move Left">
+          ‹
+        </button>
+        <button className={styles.previewManualBtn} onClick={(e) => { e.stopPropagation(); onMove(img._id, 1); }} title="Move Right">
+          ›
+        </button>
+      </div>
 
       {/* Drag handle — top-left */}
       <div className={styles.previewDragHandle} {...attributes} {...listeners}>
@@ -351,6 +367,17 @@ function GalleryPreviewPanel({ images, onReorder, user }) {
     setIsDirty(true);
   };
 
+  const handleManualMove = (id, direction) => {
+    setLocalImages(prev => {
+      const oi = prev.findIndex(i => i._id === id);
+      if (oi < 0) return prev;
+      const ni = oi + direction;
+      if (ni < 0 || ni >= prev.length) return prev;
+      return arrayMove(prev, oi, ni);
+    });
+    setIsDirty(true);
+  };
+
   const handleSaveOrder = async () => {
     setSaving(true);
     try {
@@ -424,7 +451,14 @@ function GalleryPreviewPanel({ images, onReorder, user }) {
             <DndContext sensors={sensors} collisionDetection={closestCenter} onDragStart={({ active }) => setActiveId(active.id)} onDragEnd={handleDragEnd}>
               <SortableContext items={galleryImages.map(i => i._id)} strategy={rectSortingStrategy}>
                 <div className={`${styles.previewBentoGrid} ${gridClass}`}>
-                  {galleryImages.map(img => <SortableBentoItem key={img._id} img={img} onZoneChange={handleZoneChange} />)}
+                  {galleryImages.map(img => (
+                    <SortableBentoItem 
+                      key={img._id} 
+                      img={img} 
+                      onZoneChange={handleZoneChange} 
+                      onMove={handleManualMove} 
+                    />
+                  ))}
                 </div>
               </SortableContext>
               <DragOverlay>

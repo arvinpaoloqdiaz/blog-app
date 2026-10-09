@@ -64,6 +64,30 @@ export default function Gallery() {
     return url.replace('/upload/', '/upload/q_auto,w_1600/');
   };
 
+  // Carousel logic
+  const handlePrev = (e) => {
+    e?.stopPropagation();
+    const idx = images.findIndex(i => i._id === lightboxImage._id);
+    if (idx > 0) setLightboxImage(images[idx - 1]);
+  };
+
+  const handleNext = (e) => {
+    e?.stopPropagation();
+    const idx = images.findIndex(i => i._id === lightboxImage._id);
+    if (idx < images.length - 1) setLightboxImage(images[idx + 1]);
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (!lightboxImage) return;
+      if (e.key === 'ArrowLeft') handlePrev();
+      if (e.key === 'ArrowRight') handleNext();
+      if (e.key === 'Escape') setLightboxImage(null);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [lightboxImage, images]);
+
   return (
     <motion.div className={styles.page} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       <div className={styles.header}>
@@ -156,11 +180,25 @@ export default function Gallery() {
                   <button className={styles.lightboxClose} onClick={() => setLightboxImage(null)}>
                     <FontAwesomeIcon icon={faTimes} />
                   </button>
+
+                  {images.findIndex(i => i._id === lightboxImage._id) > 0 && (
+                    <button className={styles.lightboxPrev} onClick={handlePrev}>
+                      ‹
+                    </button>
+                  )}
+
                   <img
                     src={getHighResUrl(lightboxImage.imageUrl)}
                     alt={lightboxImage.altText || lightboxImage.caption || 'Expanded'}
                     className={styles.lightboxImg}
                   />
+
+                  {images.findIndex(i => i._id === lightboxImage._id) < images.length - 1 && (
+                    <button className={styles.lightboxNext} onClick={handleNext}>
+                      ›
+                    </button>
+                  )}
+
                   {lightboxImage.caption && (
                     <p className={styles.lightboxCaption}>{lightboxImage.caption}</p>
                   )}
