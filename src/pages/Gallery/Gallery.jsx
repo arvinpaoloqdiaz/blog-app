@@ -95,19 +95,24 @@ export default function Gallery() {
             <>
               <div className={styles.bentoGrid}>
                 {images.map((img, index) => {
-                  const rows = img.rows_and_columns?.[0] || 1;
-                  const cols = img.rows_and_columns?.[1] || 1;
-                  
+                  // Map layout_zone to CSS module class
+                  const zoneClassMap = {
+                    hero:      styles.zoneHero,
+                    tall:      styles.zoneTall,
+                    wide:      styles.zoneWide,
+                    square:    styles.zoneSquare,
+                    small:     styles.zoneSmall,
+                    half:      styles.zoneHalf,
+                    half_tall: styles.zoneHalfTall,
+                    full:      styles.zoneFull,
+                    full_tall: styles.zoneFullTall,
+                  };
+                  const zoneClass = zoneClassMap[img.layout_zone] ?? styles.zoneSquare;
+
                   return (
                     <motion.div
                       key={img._id}
-                      className={styles.bentoItem}
-                      // Use inline styles to set CSS Grid spans, and aspect ratio for mobile fallback
-                      style={{
-                        gridRow: `span ${rows}`,
-                        gridColumn: `span ${cols}`,
-                        aspectRatio: `${cols} / ${rows}`
-                      }}
+                      className={`${styles.bentoItem} ${zoneClass}`}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.05 }}
@@ -118,6 +123,7 @@ export default function Gallery() {
                         alt={img.altText || img.caption || 'Gallery Image'}
                         className={styles.bentoImg}
                         loading="lazy"
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                       />
                     </motion.div>
                   );
