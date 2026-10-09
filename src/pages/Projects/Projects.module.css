@@ -161,6 +161,32 @@
   transition: transform 0.3s ease;
 }
 
+/* Zoomable image */
+.zoomable {
+  cursor: zoom-in;
+}
+
+.zoomHint {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+  backdrop-filter: blur(4px);
+  letter-spacing: 0.02em;
+}
+
+.splitImageWrapper:hover .zoomHint {
+  opacity: 1;
+}
+
 .splitItem:hover .splitImg {
   transform: translateY(-4px);
 }
@@ -279,5 +305,149 @@
   .splitItem { flex-direction: column !important; gap: 1.5rem; height: auto; }
   .splitImageWrapper { max-width: 100%; }
   .splitContent { height: auto; min-height: 320px; }
+}
+
+/* Force reverse for even skeleton items */
+.splitItemReverse {
+  flex-direction: row-reverse;
+}
+
+/* ── Muted fallback text ── */
+.muted {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  padding: 2rem 0;
+}
+
+/* ── Skeleton Loader ── */
+@keyframes shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
+}
+
+.skeletonBase {
+  background: linear-gradient(
+    90deg,
+    #eeecf4 25%,
+    #e0dcea 50%,
+    #eeecf4 75%
+  );
+  background-size: 600px 100%;
+  animation: shimmer 1.5s infinite linear;
+  border-radius: 8px;
+}
+
+.skeletonImg {
+  composes: skeletonBase;
+  width: 100%;
+  height: 320px;
+  border-radius: 12px;
+}
+
+.skeletonTitle {
+  composes: skeletonBase;
+  height: 26px;
+  width: 55%;
+  border-radius: 6px;
+}
+
+.skeletonLinks {
+  composes: skeletonBase;
+  height: 20px;
+  width: 100px;
+  border-radius: 6px;
+}
+
+.skeletonTags {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.skeletonTag {
+  composes: skeletonBase;
+  height: 22px;
+  width: 85px;
+  border-radius: 6px;
+}
+
+.skeletonDesc {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  flex: 1;
+}
+
+.skeletonLine {
+  composes: skeletonBase;
+  height: 14px;
+  width: 100%;
+  border-radius: 4px;
+}
+
+/* ── Image Zoom Modal ── */
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  background: rgba(10, 8, 20, 0.75);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.modalContent {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.modalImg {
+  max-width: 100%;
+  max-height: 80vh;
+  border-radius: 14px;
+  object-fit: contain;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+  display: block;
+}
+
+.modalCaption {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin: 0;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+.modalClose {
+  position: absolute;
+  top: -44px;
+  right: -8px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s ease, transform 0.2s ease;
+  backdrop-filter: blur(4px);
+}
+
+.modalClose:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.1);
 }
 

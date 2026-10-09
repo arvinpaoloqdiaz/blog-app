@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRocket } from "@fortawesome/free-solid-svg-icons";
+import { faRocket, faTimes, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import styles from "./Projects.module.css";
 import { supabase } from "../../lib/supabase";
 
@@ -13,9 +13,39 @@ const cardVariants = {
   })
 };
 
+const SKELETON_COUNT = 3;
+
+function ProjectSkeleton({ reverse }) {
+  return (
+    <div className={`${styles.splitItem} ${reverse ? styles.splitItemReverse : ""}`} style={{ pointerEvents: "none" }}>
+      <div className={styles.splitImageWrapper}>
+        <div className={styles.skeletonImg} />
+      </div>
+      <div className={styles.splitContent}>
+        <div className={styles.splitHeader}>
+          <div className={styles.skeletonTitle} />
+          <div className={styles.skeletonLinks} />
+        </div>
+        <div className={styles.skeletonTags}>
+          <div className={styles.skeletonTag} />
+          <div className={styles.skeletonTag} style={{ width: "70px" }} />
+          <div className={styles.skeletonTag} style={{ width: "55px" }} />
+        </div>
+        <div className={styles.skeletonDesc}>
+          <div className={styles.skeletonLine} />
+          <div className={styles.skeletonLine} style={{ width: "90%" }} />
+          <div className={styles.skeletonLine} style={{ width: "75%" }} />
+          <div className={styles.skeletonLine} style={{ width: "82%" }} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Projects() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [zoomedImg, setZoomedImg] = useState(null); // { src, alt }
 
   const fetchProjects = async () => {
     try {
@@ -36,6 +66,23 @@ export default function Projects() {
 
   useEffect(() => { fetchProjects(); }, []);
 
+  // Close modal on Escape
+  const handleKeyDown = useCallback((e) => {
+    if (e.key === "Escape") setZoomedImg(null);
+  }, []);
+  useEffect(() => {
+    if (zoomedImg) {
+      document.addEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "";
+    };
+  }, [zoomedImg, handleKeyDown]);
+
   return (
     <div className={styles.page}>
       <div className={styles.header}>
@@ -50,7 +97,11 @@ export default function Projects() {
       </div>
 
       {loading ? (
-        <p className={styles.muted}>Loading projects...</p>
+        <div className={styles.splitLayout}>
+          {Array.from({ length: SKELETON_COUNT }).map((_, i) => (
+            <ProjectSkeleton key={i} reverse={i % 2 !== 0} />
+          ))}
+        </div>
       ) : projects.length === 0 ? (
         <p className={styles.muted}>No projects found.</p>
       ) : (
@@ -59,7 +110,14 @@ export default function Projects() {
             <motion.div key={`split-${p.id}`} className={styles.splitItem} custom={i} variants={cardVariants} initial="hidden" animate="visible">
               {p.image_link && (
                 <div className={styles.splitImageWrapper}>
-                  <img src={p.image_link} alt={p.title} className={styles.splitImg} />
+                  <img
+                    src={p.image_link}
+                    alt={p.title}
+                    className={`${styles.splitImg} ${styles.zoomable}`}
+                    onClick={() => setZoomedImg({ src: p.image_link, alt: p.title })}
+                    title="Click to zoom"
+                  />
+                  <div className={styles.zoomHint}><FontAwesomeIcon icon={faMagnifyingGlass} style={{ marginRight: '5px' }} />Click to zoom</div>
                 </div>
               )}
               <div className={styles.splitContent}>
@@ -89,6 +147,39 @@ export default function Projects() {
           ))}
         </div>
       )}
+
+      {/* Image Zoom Modal */}
+      <AnimatePresence>
+        {zoomedImg && (
+          <motion.div
+            className={styles.modalBackdrop}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={() => setZoomedImg(null)}
+          >
+            <motion.div
+              className={styles.modalContent}
+              initial={{ scale: 0.85, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.85, opacity: 0 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                className={styles.modalClose}
+                onClick={() => setZoomedImg(null)}
+                aria-label="Close image preview"
+              >
+                <FontAwesomeIcon icon={faTimes} />
+              </button>
+              <img src={zoomedImg.src} alt={zoomedImg.alt} className={styles.modalImg} />
+              <p className={styles.modalCaption}>{zoomedImg.alt}</p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
