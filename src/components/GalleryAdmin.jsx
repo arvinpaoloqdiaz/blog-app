@@ -504,6 +504,7 @@ export default function GalleryAdmin() {
   const [editCaption, setEditCaption] = useState('');
   const [editAltText, setEditAltText] = useState('');
   const [editIsOnGallery, setEditIsOnGallery] = useState(false);
+  const [editIsFeatured, setEditIsFeatured] = useState(false);
   const [editZone, setEditZone] = useState('square');
   const [savingEdit, setSavingEdit] = useState(false);
 
@@ -511,6 +512,7 @@ export default function GalleryAdmin() {
   const [caption, setCaption] = useState('');
   const [altText, setAltText] = useState('');
   const [isOnGallery, setIsOnGallery] = useState(false);
+  const [isFeatured, setIsFeatured] = useState(false);
   const [zone, setZone] = useState('square');
 
   const fetchImages = useCallback(async () => {
@@ -547,11 +549,12 @@ export default function GalleryAdmin() {
       formData.append('caption', caption);
       formData.append('altText', altText);
       formData.append('is_on_gallery', isOnGallery);
+      formData.append('isFeatured', isFeatured);
       formData.append('layout_zone', zone);
       const res = await fetch(`${API}/v1/gallery`, { method: 'POST', headers: { 'Authorization': `Bearer ${user.token}` }, body: formData });
       const data = await res.json();
       if (data.success) {
-        setFile(null); setCaption(''); setAltText(''); setIsOnGallery(false); setZone('square');
+        setFile(null); setCaption(''); setAltText(''); setIsOnGallery(false); setIsFeatured(false); setZone('square');
         const fi = document.getElementById('imageFile');
         if (fi) fi.value = '';
         fetchImages();
@@ -578,7 +581,7 @@ export default function GalleryAdmin() {
 
   const openEditModal = (img) => {
     setEditingImage(img); setEditCaption(img.caption || ''); setEditAltText(img.altText || '');
-    setEditIsOnGallery(Boolean(img.is_on_gallery)); setEditZone(img.layout_zone || 'square');
+    setEditIsOnGallery(Boolean(img.is_on_gallery)); setEditIsFeatured(Boolean(img.isFeatured)); setEditZone(img.layout_zone || 'square');
     setShowEditModal(true);
   };
 
@@ -589,7 +592,7 @@ export default function GalleryAdmin() {
       const res = await fetch(`${API}/v1/gallery/${editingImage._id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${user.token}` },
-        body: JSON.stringify({ caption: editCaption, altText: editAltText, is_on_gallery: editIsOnGallery, layout_zone: editZone }),
+        body: JSON.stringify({ caption: editCaption, altText: editAltText, is_on_gallery: editIsOnGallery, isFeatured: editIsFeatured, layout_zone: editZone }),
       });
       const data = await res.json();
       if (data.success) {
@@ -709,6 +712,10 @@ export default function GalleryAdmin() {
                   <button type="button" className={`${styles.galleryPillToggle} ${isOnGallery ? styles.galleryPillActive : ''}`} onClick={() => setIsOnGallery(v => !v)}>
                     <span className={styles.galleryPillDot} />
                     <span className={styles.galleryPillLabel}>{isOnGallery ? 'Visible in Gallery' : 'Hidden from Gallery'}</span>
+                  </button>
+                  <button type="button" className={`${styles.galleryPillToggle} ${isFeatured ? styles.galleryPillActive : ''}`} onClick={() => setIsFeatured(v => !v)}>
+                    <span className={styles.galleryPillDot} />
+                    <span className={styles.galleryPillLabel}>{isFeatured ? 'Featured on Home' : 'Not Featured'}</span>
                   </button>
                 </div>
                 <Button type="submit" disabled={uploading || !file} className={styles.submitBtn}>
@@ -837,10 +844,14 @@ export default function GalleryAdmin() {
               <Form.Label className={styles.formLabel}>Layout Zone</Form.Label>
               <ZonePicker value={editZone} onChange={setEditZone} />
             </Form.Group>
-            <div className={styles.galleryToggleWrapper} style={{ paddingBottom: 0, marginBottom: '0.5rem' }}>
+            <div className={styles.galleryToggleWrapper} style={{ paddingBottom: 0, marginBottom: '0.5rem', display: 'flex', gap: '0.5rem' }}>
               <button type="button" className={`${styles.galleryPillToggle} ${editIsOnGallery ? styles.galleryPillActive : ''}`} onClick={() => setEditIsOnGallery(v => !v)}>
                 <span className={styles.galleryPillDot} />
                 <span className={styles.galleryPillLabel}>{editIsOnGallery ? 'Visible in Gallery' : 'Hidden from Gallery'}</span>
+              </button>
+              <button type="button" className={`${styles.galleryPillToggle} ${editIsFeatured ? styles.galleryPillActive : ''}`} onClick={() => setEditIsFeatured(v => !v)}>
+                <span className={styles.galleryPillDot} />
+                <span className={styles.galleryPillLabel}>{editIsFeatured ? 'Featured on Home' : 'Not Featured'}</span>
               </button>
             </div>
           </Form>
