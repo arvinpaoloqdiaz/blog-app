@@ -37,40 +37,46 @@ export default function GitHubActivity() {
     const fetchAll = async () => {
       setLoading(true);
       try {
-        // Fetch public push events — payload.commits is absent in public API,
-        // so we grab the head SHA and fetch each commit message individually.
-        const eventsRes = await fetch(
-          `https://api.github.com/users/${GITHUB_USERNAME}/events/public?per_page=100`,
+        // Fetch recent commits across user's most recently pushed repos.
+        // GitHub's /events/public feed can lag significantly behind pushes (5-30+ minutes),
+        // whereas repo commits are immediate.
+        const reposRes = await fetch(
+          `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=pushed&per_page=5`,
           { headers: buildHeaders() }
         );
-        const events = await eventsRes.json();
+        const repos = await reposRes.json();
 
-        const pushEvents = Array.isArray(events)
-          ? events.filter((e) => e.type === "PushEvent").slice(0, 3)
-          : [];
+        let commits = [];
+        if (Array.isArray(repos)) {
+          const commitLists = await Promise.all(
+            repos.slice(0, 4).map(async (repo) => {
+              try {
+                const cRes = await fetch(
+                  `https://api.github.com/repos/${repo.full_name}/commits?author=${GITHUB_USERNAME}&per_page=3`,
+                  { headers: buildHeaders() }
+                );
+                const data = await cRes.json();
+                if (!Array.isArray(data)) return [];
+                return data.map((c) => ({
+                  repo: repo.full_name,
+                  repoShort: repo.name,
+                  message: c.commit?.message?.split("\n")[0] || "(no message)",
+                  sha: c.sha,
+                  date: c.commit?.author?.date || c.commit?.committer?.date,
+                  url: c.html_url || `https://github.com/${repo.full_name}/commit/${c.sha}`,
+                }));
+              } catch (_) {
+                return [];
+              }
+            })
+          );
 
-        const commits = await Promise.all(
-          pushEvents.map(async (event) => {
-            const headSha = event.payload.head;
-            let message = "(no message)";
-            try {
-              const cRes = await fetch(
-                `https://api.github.com/repos/${event.repo.name}/commits/${headSha}`,
-                { headers: buildHeaders() }
-              );
-              const cData = await cRes.json();
-              message = cData.commit?.message?.split("\n")[0] || message;
-            } catch (_) {/* swallow individual commit errors */}
-            return {
-              repo: event.repo.name,
-              repoShort: event.repo.name.split("/")[1],
-              message,
-              sha: headSha,
-              date: event.created_at,
-              url: `https://github.com/${event.repo.name}/commit/${headSha}`,
-            };
-          })
-        );
+          commits = commitLists
+            .flat()
+            .sort((a, b) => new Date(b.date) - new Date(a.date))
+            .slice(0, 3);
+        }
+
         setRecentCommits(commits);
 
         // Contribution heatmap (public API, no auth)
