@@ -388,57 +388,98 @@
 .latestPostsList {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.6rem;
 }
 
 .latestPostRow {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 1rem;
-  padding: 0.75rem 1rem;
+  padding: 0.85rem 1.15rem;
   text-decoration: none;
   background: var(--surface);
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid var(--border);
-  transition: all 0.25s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.2s ease,
+              background-color 0.2s ease;
   position: relative;
-  overflow: hidden;
+  cursor: pointer;
 }
 
-.latestPostRow::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background: var(--accent-gradient);
-  opacity: 0;
-  transition: opacity 0.2s ease;
+.latestPostLeft {
+  display: flex;
+  align-items: baseline;
+  gap: 1.1rem;
+  min-width: 0;
+  flex: 1;
 }
 
 .latestPostRow:hover {
-  border-color: rgba(120, 80, 160, 0.25);
+  transform: translateY(-2px);
+  border-color: rgba(120, 80, 160, 0.3);
+  background: #ffffff;
+  box-shadow: 0 4px 14px rgba(120, 80, 160, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.latestPostRow:hover .latestPostTitle {
+  color: var(--accent1);
+}
+
+.latestPostRow:hover .latestPostArrow {
+  opacity: 1;
+  transform: translateX(0);
+  color: var(--accent1);
+}
+
+/* Tactile Active state (mouse press / tap) */
+.latestPostRow:active {
+  transform: translateY(0) scale(0.995);
+  box-shadow: 0 1px 4px rgba(120, 80, 160, 0.06);
+  border-color: rgba(120, 80, 160, 0.4);
   background: rgba(120, 80, 160, 0.03);
 }
 
-.latestPostRow:hover::before {
-  opacity: 1;
-}
-
 .latestPostDate {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--text-muted);
-  min-width: 50px;
+  min-width: 52px;
   font-variant-numeric: tabular-nums;
   font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
   flex-shrink: 0;
+  transition: color 0.2s ease;
+}
+
+.latestPostRow:hover .latestPostDate {
+  color: var(--accent2);
 }
 
 .latestPostTitle {
   font-size: 0.95rem;
   font-weight: 600;
   color: var(--text-main);
+  transition: color 0.2s ease;
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.latestPostArrow {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  opacity: 0.35;
+  transform: translateX(-3px);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.2s ease,
+              color 0.2s ease;
+  flex-shrink: 0;
 }
 
 /* Marquee Section */

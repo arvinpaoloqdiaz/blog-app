@@ -3,6 +3,7 @@ import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import UserContext from "../UserContext";
 import styles from "./Home.module.css";
+import GitHubActivity from "../components/GitHubActivity/GitHubActivity";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileLines, faRocket, faImage, faBookmark, faHourglassHalf, faScrewdriverWrench } from "@fortawesome/free-solid-svg-icons";
@@ -189,15 +190,21 @@ export default function Home() {
           <div className={styles.latestPostsList}>
             {latestPosts.map(post => (
               <Link to={`/writing/${post._id}`} key={post._id} className={styles.latestPostRow}>
-                <span className={styles.latestPostDate}>
-                  {new Date(post.publishedOn).toLocaleDateString(undefined, { month: 'short', day: '2-digit' })}
-                </span>
-                <span className={styles.latestPostTitle}>{post.title}</span>
+                <div className={styles.latestPostLeft}>
+                  <span className={styles.latestPostDate}>
+                    {new Date(post.publishedOn).toLocaleDateString(undefined, { month: 'short', day: '2-digit' })}
+                  </span>
+                  <span className={styles.latestPostTitle}>{post.title}</span>
+                </div>
+                <span className={styles.latestPostArrow} aria-hidden="true">&rarr;</span>
               </Link>
             ))}
           </div>
         </section>
       )}
+
+      {/* GitHub Activity */}
+      <GitHubActivity />
 
       {/* Topics / Tags */}
       {popularTags.length > 0 && (
