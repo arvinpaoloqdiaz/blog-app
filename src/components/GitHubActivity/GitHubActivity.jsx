@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import styles from "./GitHubActivity.module.css";
 
-const GITHUB_USERNAME = import.meta.env.VITE_GITHUB_USERNAME;
+// Support multiple accounts via VITE_GITHUB_USERNAMES (comma-separated).
+// Falls back to the legacy VITE_GITHUB_USERNAME for backward compatibility.
+const RAW_USERNAMES = import.meta.env.VITE_GITHUB_USERNAMES || import.meta.env.VITE_GITHUB_USERNAME || "";
+const GITHUB_USERNAMES = RAW_USERNAMES.split(",").map((u) => u.trim()).filter(Boolean);
+const PRIMARY_USERNAME = GITHUB_USERNAMES[0] || "";
 const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
-
-
 
 function buildHeaders() {
   const headers = { Accept: "application/vnd.github+json" };
@@ -25,66 +27,98 @@ function shortSha(sha) {
   return sha ? sha.slice(0, 7) : "-------";
 }
 
+// Fetch the 3 most-recently-pushed repos for one account and collect
+// up to 2 commits per repo authored by that account.
+async function fetchCommitsForUser(username) {
+  try {
+    const reposRes = await fetch(
+      `https://api.github.com/users/${username}/repos?sort=pushed&per_page=4`,
+      { headers: buildHeaders() }
+    );
+    const repos = await reposRes.json();
+    if (!Array.isArray(repos)) return [];
+
+    const commitLists = await Promise.all(
+      repos.slice(0, 3).map(async (repo) => {
+        try {
+          const cRes = await fetch(
+            `https://api.github.com/repos/${repo.full_name}/commits?author=${username}&per_page=2`,
+            { headers: buildHeaders() }
+          );
+          const data = await cRes.json();
+          if (!Array.isArray(data)) return [];
+          return data.map((c) => ({
+            repo: repo.full_name,
+            repoShort: repo.name,
+            author: username,
+            message: c.commit?.message?.split("\n")[0] || "(no message)",
+            sha: c.sha,
+            date: c.commit?.author?.date || c.commit?.committer?.date,
+            url: c.html_url || `https://github.com/${repo.full_name}/commit/${c.sha}`,
+          }));
+        } catch (_) {
+          return [];
+        }
+      })
+    );
+
+    return commitLists.flat();
+  } catch (_) {
+    return [];
+  }
+}
+
+// Fetch contributions for one account and return a { date → count } map.
+async function fetchContribMapForUser(username) {
+  try {
+    const res = await fetch(
+      `https://github-contributions-api.jogruber.de/v4/${username}?y=last`
+    );
+    const data = await res.json();
+    const map = {};
+    (data?.contributions || []).forEach(({ date, count }) => {
+      map[date] = count;
+    });
+    return map;
+  } catch (_) {
+    return {};
+  }
+}
+
 export default function GitHubActivity() {
-  const [contributions, setContributions] = useState(null);
+  // countMap is a plain { "YYYY-MM-DD": totalCount } merged across all accounts
+  const [countMap, setCountMap] = useState(null);
   const [recentCommits, setRecentCommits] = useState([]);
   const [loading, setLoading] = useState(true);
   const [tooltip, setTooltip] = useState(null);
 
   useEffect(() => {
-    if (!GITHUB_USERNAME) return;
+    if (!PRIMARY_USERNAME) return;
 
     const fetchAll = async () => {
       setLoading(true);
       try {
-        // Fetch recent commits across user's most recently pushed repos.
-        // GitHub's /events/public feed can lag significantly behind pushes (5-30+ minutes),
-        // whereas repo commits are immediate.
-        const reposRes = await fetch(
-          `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=pushed&per_page=5`,
-          { headers: buildHeaders() }
+        // --- Commits: fetch all accounts in parallel, merge, pick top 5 ---
+        const allCommitArrays = await Promise.all(
+          GITHUB_USERNAMES.map((u) => fetchCommitsForUser(u))
         );
-        const repos = await reposRes.json();
+        const mergedCommits = allCommitArrays
+          .flat()
+          .sort((a, b) => new Date(b.date) - new Date(a.date))
+          .slice(0, 5);
+        setRecentCommits(mergedCommits);
 
-        let commits = [];
-        if (Array.isArray(repos)) {
-          const commitLists = await Promise.all(
-            repos.slice(0, 4).map(async (repo) => {
-              try {
-                const cRes = await fetch(
-                  `https://api.github.com/repos/${repo.full_name}/commits?author=${GITHUB_USERNAME}&per_page=3`,
-                  { headers: buildHeaders() }
-                );
-                const data = await cRes.json();
-                if (!Array.isArray(data)) return [];
-                return data.map((c) => ({
-                  repo: repo.full_name,
-                  repoShort: repo.name,
-                  message: c.commit?.message?.split("\n")[0] || "(no message)",
-                  sha: c.sha,
-                  date: c.commit?.author?.date || c.commit?.committer?.date,
-                  url: c.html_url || `https://github.com/${repo.full_name}/commit/${c.sha}`,
-                }));
-              } catch (_) {
-                return [];
-              }
-            })
-          );
-
-          commits = commitLists
-            .flat()
-            .sort((a, b) => new Date(b.date) - new Date(a.date))
-            .slice(0, 3);
-        }
-
-        setRecentCommits(commits);
-
-        // Contribution heatmap (public API, no auth)
-        const contribRes = await fetch(
-          `https://github-contributions-api.jogruber.de/v4/${GITHUB_USERNAME}?y=last`
+        // --- Heatmap: fetch all accounts in parallel, sum counts per date ---
+        const allContribMaps = await Promise.all(
+          GITHUB_USERNAMES.map((u) => fetchContribMapForUser(u))
         );
-        const contribData = await contribRes.json();
-        setContributions(contribData);
+        const merged = {};
+        allContribMaps.forEach((map) => {
+          Object.entries(map).forEach(([date, count]) => {
+            merged[date] = (merged[date] || 0) + count;
+          });
+        });
+        setCountMap(merged);
       } catch (e) {
         console.error("GitHub fetch error:", e);
       } finally {
@@ -95,7 +129,7 @@ export default function GitHubActivity() {
     fetchAll();
   }, []);
 
-  if (!GITHUB_USERNAME) return null;
+  if (!PRIMARY_USERNAME) return null;
 
   return (
     <section className={styles.section}>
@@ -110,7 +144,7 @@ export default function GitHubActivity() {
           <p className={styles.sectionSubtitle}>Fresh off the keyboard</p>
         </div>
         <a
-          href={`https://github.com/${GITHUB_USERNAME}`}
+          href={`https://github.com/${PRIMARY_USERNAME}`}
           target="_blank"
           rel="noopener noreferrer"
           className={styles.viewAllLink}
@@ -126,7 +160,7 @@ export default function GitHubActivity() {
         </div>
       ) : (
         <>
-          {/* Latest commits */}
+          {/* Latest commits — across all configured accounts */}
           {recentCommits.length > 0 && (
             <div className={styles.commitList}>
               {recentCommits.map((c, i) => (
@@ -140,6 +174,9 @@ export default function GitHubActivity() {
                   <code className={styles.sha}>{shortSha(c.sha)}</code>
                   <span className={styles.commitMsg}>{c.message}</span>
                   <span className={styles.commitRight}>
+                    {GITHUB_USERNAMES.length > 1 && (
+                      <span className={styles.commitAuthor}>{c.author}</span>
+                    )}
                     <span className={styles.commitRepo}>{c.repoShort}</span>
                     <span className={styles.commitTime}>{timeAgo(c.date)}</span>
                   </span>
@@ -148,9 +185,9 @@ export default function GitHubActivity() {
             </div>
           )}
 
-          {/* Heatmap */}
-          {contributions && (
-            <HeatmapGrid contributions={contributions} setTooltip={setTooltip} />
+          {/* Heatmap — merged contributions across all accounts */}
+          {countMap && (
+            <HeatmapGrid countMap={countMap} setTooltip={setTooltip} />
           )}
         </>
       )}
@@ -164,13 +201,25 @@ export default function GitHubActivity() {
   );
 }
 
-function HeatmapGrid({ contributions, setTooltip }) {
+function HeatmapGrid({ countMap, setTooltip }) {
   const today = new Date();
 
-  const countMap = {};
-  (contributions?.contributions || []).forEach((c) => {
-    countMap[c.date] = c.count;
-  });
+  // Dynamic level thresholds — scale to the actual max so merged counts
+  // (which can be 2–3× higher than a single account) still use the full
+  // colour range rather than always showing level-4.
+  const allCounts = Object.values(countMap).filter((n) => n > 0);
+  const maxCount = allCounts.length > 0 ? Math.max(...allCounts) : 1;
+  const t1 = Math.ceil(maxCount * 0.25);
+  const t2 = Math.ceil(maxCount * 0.5);
+  const t3 = Math.ceil(maxCount * 0.75);
+
+  function getLevel(count) {
+    if (count === 0) return 0;
+    if (count <= t1) return 1;
+    if (count <= t2) return 2;
+    if (count <= t3) return 3;
+    return 4;
+  }
 
   // Start from the 1st of the month 5 months ago (6 months total including current month), aligned to Sunday
   const startMonth = new Date(today.getFullYear(), today.getMonth() - 5, 1);
@@ -226,14 +275,6 @@ function HeatmapGrid({ contributions, setTooltip }) {
       lastMonth = month;
     }
   });
-
-  function getLevel(count) {
-    if (count === 0) return 0;
-    if (count <= 2) return 1;
-    if (count <= 5) return 2;
-    if (count <= 9) return 3;
-    return 4;
-  }
 
   function handleMouseEnter(e, day) {
     if (!day) return;
